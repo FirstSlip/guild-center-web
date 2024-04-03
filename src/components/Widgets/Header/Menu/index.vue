@@ -22,8 +22,8 @@ const menuItems = [
     href: '/'
   },
   {
-    title: 'Функционал',
-    href: '/'
+    title: 'test UI',
+    href: '/test/ui'
   },
   {
     title: 'Поддержка',

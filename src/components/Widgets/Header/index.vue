@@ -25,6 +25,7 @@ header.header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
     max-width: 90.625rem;
     height: 100%;
     margin: 0 auto;
