@@ -26,7 +26,7 @@ header.header {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    max-width: 90.625rem;
+    max-width: $main-width;
     height: 100%;
     margin: 0 auto;
     gap: 1rem;

@@ -1,14 +1,15 @@
 <template>
   <div>
     <WidgetsHeader />
-    <div class="bg">
+    <!-- <div class="bg">
       <SVGBackground />
-    </div>
+    </div> -->
     <div class="content">
       <div class="cw">
-        <slot></slot>
+        <NuxtPage />
       </div>
     </div>
+    <WidgetsFooter />
   </div>
 </template>
 <style lang="scss" scoped>
@@ -24,11 +25,12 @@
   position: relative;
   z-index: 1;
   width: 100%;
+  min-height: calc(100svh - $header-height);
   padding: 1rem 1rem;
   user-select: none;
 
   .cw {
-    max-width: 90.625rem;
+    max-width: $main-width;
     height: 100%;
     margin: 0 auto;
     gap: 1rem;
