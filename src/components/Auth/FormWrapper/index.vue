@@ -1,5 +1,5 @@
 <template>
-  <form class="auth">
+  <form class="auth" @submit.prevent="submit">
     <h1 class="h4">Добро пожаловать в сервис GuildCenter!</h1>
     <h2 class="h2">
       {{ formType === 'sign-in' ? 'Вход' : 'Регистрация' }}
@@ -16,7 +16,7 @@
       {{ formBottomText[formType].text }}
       <UILink
         :to="formBottomText[formType].link.to"
-        inherit-font
+        font-type="inherited"
       >
         {{ formBottomText[formType].link.text }}
       </UILink>
@@ -26,8 +26,8 @@
 <script setup lang="ts">
 type AuthFormType = 'sign-in' | 'sign-up';
 const props = defineProps<{ type?: AuthFormType }>();
+const emits = defineEmits(['submit']);
 defineSlots<{
-  ['after-icon']: [];
   ['inputs']: [];
 }>();
 
@@ -51,6 +51,7 @@ const formBottomText = {
 };
 
 const formType = computed(() => props.type || 'sign-in');
+const submit = () => emits('submit');
 </script>
 <style lang="scss" scoped>
 form.auth {
@@ -66,6 +67,8 @@ form.auth {
 
   background: $background-dark-purple;
 
+  margin: 10% auto;
+
   .form-body {
     margin-top: 1.5rem;
     width: 22rem;
@@ -78,6 +81,11 @@ form.auth {
       flex-direction: column;
       gap: 1.25rem;
     }
+  }
+
+  p.auth-switch {
+    margin-top: 1.25rem;
+    text-align: center;
   }
 }
 </style>
