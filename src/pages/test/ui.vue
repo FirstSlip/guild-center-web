@@ -38,10 +38,26 @@
       </p>
       <p>
         Что-то там
-        <UILink type="primary" to="/test/ui" inherit-font>
+        <UILink
+          type="primary"
+          to="/test/ui"
+          font-type="inherited"
+        >
           ссылка основная, наследует шрифт
         </UILink>
         что-то там
+      </p>
+      <p>
+        <UILink to="/test/ui" font-type="h1">H1 link</UILink>
+      </p>
+      <p>
+        <UILink to="/test/ui" font-type="h4">H4 link</UILink>
+      </p>
+      <p>
+        <UILink to="/test/ui" font-type="p1">P1 link</UILink>
+      </p>
+      <p>
+        <UILink to="/test/ui" font-type="p4">P4 link</UILink>
       </p>
     </div>
     <div class="inputs">
