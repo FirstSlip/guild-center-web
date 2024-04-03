@@ -1,0 +1,13 @@
+{
+  // https://nuxt.com/docs/guide/concepts/typescript
+  "extends": "./.nuxt/tsconfig.json",
+  "rootDir": "./src",
+  "compilerOptions": {
+    "paths": {
+      "@request": ["./src/common/request.ts"],
+      "@": ["./src"],
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["env.d.ts", ".nuxt/nuxt.d.ts", "**/*"]
+}
