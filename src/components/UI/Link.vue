@@ -1,7 +1,11 @@
 <template>
   <nuxt-link
     :to="to"
-    :class="['link', linkType, inheritFont && 'inherited-font']"
+    :class="[
+      'link',
+      linkType,
+      fontType && `has-font ${fontType}`
+    ]"
     :style="{ padding: padding }"
   >
     <slot></slot>
@@ -9,6 +13,18 @@
 </template>
 <script setup lang="ts">
 type LinkVariant = 'primary' | 'secondary';
+type FontType =
+  | 'h1'
+  | 'h2'
+  | 'h3'
+  | 'h4'
+  | 'h5'
+  | 'p1'
+  | 'p2'
+  | 'p3'
+  | 'p4'
+  | 'custom-label'
+  | 'inherited';
 
 const props = defineProps<{
   to: string;
@@ -17,7 +33,7 @@ const props = defineProps<{
   uppercase?: boolean;
   disabled?: boolean;
   fill?: boolean;
-  inheritFont?: boolean;
+  fontType?: FontType;
 }>();
 
 const linkType = computed(
@@ -26,19 +42,11 @@ const linkType = computed(
 </script>
 <style lang="scss" scoped>
 a.link {
-  font-size: 1.25rem;
-  line-height: 155%;
   text-decoration: none;
   color: #fff;
   cursor: pointer;
 
   transition: all 0.2s ease;
-
-  &.inherited-font {
-    font-size: inherit;
-    font-weight: inherit;
-    line-height: inherit;
-  }
 
   &.primary {
     color: $linkPrimaryColor;
@@ -64,6 +72,18 @@ a.link {
     &:active {
       color: $linkSecondaryActiveColor;
     }
+  }
+
+  &.inherited {
+    font-size: inherit;
+    line-height: inherit;
+    font-weight: inherit;
+  }
+
+  &:not(.has-font) {
+    font-size: 1.25rem;
+    line-height: 155%;
+    font-weight: 400;
   }
 }
 </style>

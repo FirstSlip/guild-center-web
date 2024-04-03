@@ -38,6 +38,8 @@
           "
           :placeholder="placeholder || 'Placeholder'"
           :readonly="readonly"
+          @focus="$emit('focus')"
+          @blur="$emit('blur')"
         />
       </div>
       <div class="icons">
@@ -45,7 +47,11 @@
           <SVGCross v-if="error" />
           <SVGCheck v-else-if="validated" />
         </div>
-        <button v-if="isPassword" @click="toggleEye">
+        <button
+          v-if="isPassword"
+          @click="toggleEye"
+          type="button"
+        >
           <SVGEyeClosed
             v-if="isHidden"
             :class="['icon', 'eye']"
@@ -54,16 +60,19 @@
         </button>
       </div>
     </label>
-    <div v-if="error" class="error">
-      {{ error }}
+    <div class="after-text">
+      <div v-if="error" class="error">
+        {{ error }}
+      </div>
+      <slot name="after-text"></slot>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-/* import type { InputHTMLAttributes } from 'nuxt/dist/app/compat/capi'; */
 import type { InputHTMLAttributes } from 'vue';
 
+type AfterTextPositionType = 'default' | 'error-overflow';
 type Props = {
   id?: string;
   fill?: boolean;
@@ -75,16 +84,21 @@ type Props = {
   placeholder?: InputHTMLAttributes['placeholder'];
   autocomplete?: InputHTMLAttributes['autocomplete'];
   readonly?: InputHTMLAttributes['readonly'];
+  afterTextPosition?: AfterTextPositionType;
 };
 
+const props = defineProps<Props>();
+const model = defineModel<string | number>();
 defineSlots<{
   ['before-icon']: [];
+  ['after-text']: [];
 }>();
-const model = defineModel<string | number>();
-console.log(String(model.value || '').length > 0 && 'entered');
-const props = defineProps<Props>();
+defineEmits(['focus', 'blur']);
 
 const isPassword = computed(() => props?.type === 'password');
+const afterTextPositionComputed = computed(
+  () => props.afterTextPosition || 'default'
+);
 const isHidden = ref(true);
 
 function toggleEye() {
@@ -94,6 +108,8 @@ function toggleEye() {
 
 <style lang="scss" scoped>
 .inputWrapper {
+  position: relative;
+
   label.label {
     display: flex;
     align-items: center;
@@ -249,17 +265,17 @@ function toggleEye() {
       .icon.eye {
         margin-left: auto;
         cursor: pointer;
+
+        path[stroke]:not([stroke~='none']) {
+          stroke: currentColor;
+        }
+        path[fill]:not([fill~='none']) {
+          fill: currentColor;
+        }
       }
 
       * {
         color: currentColor;
-      }
-
-      [stroke]:not([stroke~='none']) {
-        stroke: currentColor;
-      }
-      [fill]:not([fill~='none']) {
-        fill: currentColor;
       }
     }
 
@@ -294,10 +310,16 @@ function toggleEye() {
     }
   }
 
-  .error {
+  .after-text {
     margin-top: 0.25rem;
-    color: $text-red;
-    font-size: 0.81rem;
+    display: flex;
+    justify-content: space-between;
+
+    .error {
+      color: $text-red;
+      font-size: 0.75rem;
+      line-height: 155%;
+    }
   }
 }
 </style>
