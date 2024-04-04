@@ -60,7 +60,7 @@
         </button>
       </div>
     </label>
-    <div class="after-text">
+    <div class="after-text" v-if="error || $slots['after-text']">
       <div v-if="error" class="error">
         {{ error }}
       </div>
@@ -199,6 +199,11 @@ function toggleEye() {
         }
         &::placeholder {
           color: transparent;
+        }
+
+        &:-webkit-autofill {
+          -webkit-box-shadow: 0 0 0 30px #08001a inset !important;
+          -webkit-text-fill-color: $text-white !important;
         }
       }
 
