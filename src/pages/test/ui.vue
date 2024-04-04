@@ -71,8 +71,13 @@
       <UIInput error="Error" />
       <UIInput validated />
     </div>
-    <div class="inputs">
-      <p>asdasd</p>
+    <div class="code-inputs">
+      default
+      <UICodeInput />
+      filled
+      <UICodeInput fill />
+      length = 5
+      <UICodeInput :length="5" />
     </div>
   </div>
 </template>
@@ -122,6 +127,20 @@
 
     border: 1px solid white;
     border-radius: 10px;
+  }
+
+  .code-inputs {
+    background-color: #121729;
+    margin-top: 1rem;
+    width: 100%;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    border: 1px solid white;
+    border-radius: 10px;
+    text-align: center;
   }
 }
 </style>
