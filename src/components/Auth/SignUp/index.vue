@@ -3,18 +3,6 @@
     <AuthFormWrapper type="sign-up">
       <template v-slot:inputs>
         <UIInput
-          placeholder="Никнейм"
-          autocomplete="username"
-          v-model="fields.username.value"
-          @blur="validate('username')"
-          :error="
-            fields.username.error
-              ? 'Некорректное имя'
-              : undefined
-          "
-          :validated="fields.username.validated"
-        />
-        <UIInput
           placeholder="Email"
           autocomplete="email"
           v-model="fields.email.value"
@@ -23,6 +11,18 @@
             fields.email.error ? 'Некорректная почта' : undefined
           "
           :validated="fields.email.validated"
+        />
+        <UIInput
+          placeholder="Никнейм"
+          autocomplete="nickname"
+          v-model="fields.username.value"
+          @blur="validate('username')"
+          :error="
+            fields.username.error
+              ? 'Некорректное имя'
+              : undefined
+          "
+          :validated="fields.username.validated"
         />
         <UIInput
           placeholder="Пароль"

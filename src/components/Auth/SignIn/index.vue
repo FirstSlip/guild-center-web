@@ -21,10 +21,4 @@
   </div>
 </template>
 <script setup lang="ts"></script>
-<style lang="scss" scoped>
-/* .sign-in {
-  p.forgot-password {
-    text-align: right;
-  }
-} */
-</style>
+<style lang="scss" scoped></style>

@@ -67,7 +67,7 @@ form.auth {
 
   background: $background-dark-purple;
 
-  margin: 10% auto;
+  margin: 5% auto;
 
   .form-body {
     margin-top: 1.5rem;
