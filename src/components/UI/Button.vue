@@ -13,7 +13,7 @@
   </button>
 </template>
 <script setup lang="ts">
-type ButtonVariant = 'primary' | 'secondary';
+type ButtonVariant = 'primary' | 'secondary' | 'back';
 
 const props = defineProps<{
   type?: ButtonVariant;
@@ -118,6 +118,22 @@ button.button {
         color: $buttonSecondaryTransparentActiveColor;
         border-color: $buttonSecondaryTransparentActiveStroke;
       }
+    }
+  }
+
+  &.back {
+    background-color: $buttonBackBg;
+    color: $buttonBackColor;
+
+    &:hover {
+      background-color: $buttonBackHoverBg;
+      color: $buttonBackHoverColor;
+    }
+
+    &:active {
+      background-color: $buttonBackActiveBg;
+      color: $buttonBackActiveColor;
+      border-color: $buttonBackActiveStroke;
     }
   }
 }
