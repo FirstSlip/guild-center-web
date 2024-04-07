@@ -26,12 +26,12 @@
   min-height: calc(100svh - $header-height);
   padding: 1rem 1rem;
 
+  overflow: hidden;
+
   .cw {
     max-width: $main-width;
     height: 100%;
     margin: 0 auto;
-
-    overflow: hidden;
   }
 }
 </style>
