@@ -1,6 +1,7 @@
 <template>
-  <div class="sign-in">
+  <div class="sign-up">
     <AuthFormWrapper type="sign-up">
+      <template v-slot:title>Регистрация</template>
       <template v-slot:inputs>
         <UIInput
           placeholder="Email"
@@ -50,6 +51,15 @@
           "
           :validated="fields.confirmPassword.validated"
         />
+      </template>
+      <template v-slot:buttons>
+        <UIButton fill>Зарегистрироваться</UIButton>
+      </template>
+      <template v-slot:bottom-text>
+        Есть аккаунт?
+        <UILink to="/auth/sign-in" font-type="inherited">
+          Войти
+        </UILink>
       </template>
     </AuthFormWrapper>
   </div>

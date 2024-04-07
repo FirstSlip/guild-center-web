@@ -2,24 +2,18 @@
   <form class="auth" @submit.prevent="submit">
     <h1 class="h4">Добро пожаловать в сервис GuildCenter!</h1>
     <h2 class="h2">
-      {{ formType === 'sign-in' ? 'Вход' : 'Регистрация' }}
+      <slot name="title"></slot>
     </h2>
     <div class="form-body">
       <div class="inputs">
         <slot name="inputs"></slot>
       </div>
-      <UIButton fill>
-        {{ formBottomText[formType].buttonText }}
-      </UIButton>
+      <div class="buttons">
+        <slot name="buttons"></slot>
+      </div>
     </div>
-    <p class="auth-switch h5">
-      {{ formBottomText[formType].text }}
-      <UILink
-        :to="formBottomText[formType].link.to"
-        font-type="inherited"
-      >
-        {{ formBottomText[formType].link.text }}
-      </UILink>
+    <p class="bottom-text h5">
+      <slot name="bottom-text"></slot>
     </p>
   </form>
 </template>
@@ -28,7 +22,10 @@ type AuthFormType = 'sign-in' | 'sign-up';
 const props = defineProps<{ type?: AuthFormType }>();
 const emits = defineEmits(['submit']);
 defineSlots<{
+  ['title']: [];
   ['inputs']: [];
+  ['buttons']: [];
+  ['bottom-text']: [];
 }>();
 
 const formBottomText = {
@@ -81,9 +78,15 @@ form.auth {
       flex-direction: column;
       gap: 1.25rem;
     }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
   }
 
-  p.auth-switch {
+  p.bottom-text {
     margin-top: 1.25rem;
     text-align: center;
   }

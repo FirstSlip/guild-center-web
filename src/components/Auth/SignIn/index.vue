@@ -1,6 +1,7 @@
 <template>
   <div class="sign-in">
     <AuthFormWrapper type="sign-in">
+      <template v-slot:title>Вход</template>
       <template v-slot:inputs>
         <UIInput placeholder="Email" autocomplete="email" />
         <UIInput
@@ -16,6 +17,15 @@
             </UILink>
           </template>
         </UIInput>
+      </template>
+      <template v-slot:buttons>
+        <UIButton fill>Войти</UIButton>
+      </template>
+      <template v-slot:bottom-text>
+        Нет аккаунта?
+        <UILink to="/auth/sign-up" font-type="inherited">
+          Зарегистрироваться
+        </UILink>
       </template>
     </AuthFormWrapper>
   </div>
