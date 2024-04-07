@@ -43,6 +43,19 @@ $buttonSecondaryActiveBg: rgba(255, 205, 41, 0.6);
 $buttonSecondaryActiveColor: $text-dark-60;
 $buttonSecondaryActiveStroke: rgba(255, 205, 41, 0.6);
 
+// Back button colors
+$buttonBackBg: #999;
+$buttonBackColor: $text-white;
+$buttonBackStroke: #999;
+
+$buttonBackHoverBg: inherit;
+$buttonBackHoverColor: $text-white-60;
+$buttonBackHoverStroke: rgba(226, 226, 226, 0.6);
+
+$buttonBackActiveBg: inherit;
+$buttonBackActiveColor: $text-white-60;
+$buttonBackActiveStroke: rgba(226, 226, 226, 0.6);
+
 // Primary transparent button colors
 $buttonPrimaryTransparentBg: transparent;
 $buttonPrimaryTransparentColor: $text-white;
