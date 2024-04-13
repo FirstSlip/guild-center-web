@@ -122,12 +122,16 @@ button.button {
   }
 
   &.back {
+    border: 1px solid;
+
     background-color: $buttonBackBg;
     color: $buttonBackColor;
+    border-color: $buttonBackStroke;
 
     &:hover {
       background-color: $buttonBackHoverBg;
       color: $buttonBackHoverColor;
+      border-color: $buttonBackHoverStroke;
     }
 
     &:active {
