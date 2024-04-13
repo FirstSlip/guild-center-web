@@ -3,12 +3,23 @@
     <div class="cw">
       <WidgetsHeaderLogo />
       <WidgetsHeaderMenu />
-      <WidgetsHeaderTools />
+      <WidgetsHeaderUser
+        v-if="user"
+        :user="user"
+        @sign-out="signOut"
+      />
+      <WidgetsHeaderTools v-else />
     </div>
   </header>
 </template>
-<script>
-export default {};
+<script setup lang="ts">
+import type { User } from '@/ts/User';
+
+const user = useState<User | null>('user');
+
+const signOut = () => {
+  user.value = null;
+};
 </script>
 <style lang="scss" scoped>
 header.header {
