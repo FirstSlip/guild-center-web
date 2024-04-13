@@ -1,6 +1,6 @@
 export default defineNuxtRouteMiddleware((to, from) => {
   console.log(to, from);
-  if (to.params.id === '1') {
+  if (useState('user').value) {
     return abortNavigation();
   }
   // In a real app you would probably not redirect every route to `/`
