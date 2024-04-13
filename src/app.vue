@@ -4,6 +4,12 @@
   </NuxtLayout>
 </template>
 
+<script setup lang="ts">
+import type { User } from './ts/User';
+
+useState<User | null>('user', () => null);
+</script>
+
 <style lang="scss">
 .page-auth-enter-active {
   transition: all 0.4s;
