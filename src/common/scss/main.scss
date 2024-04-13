@@ -13,7 +13,7 @@
 body {
   margin: 0px;
   padding: 0px;
-  background-color: #272937;
+  background-color: $background-dark-purple;
 }
 
 .h1 {
@@ -82,4 +82,10 @@ body {
   letter-spacing: 0.03em;
   text-transform: uppercase;
   color: $text-light;
+}
+
+span {
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
 }
