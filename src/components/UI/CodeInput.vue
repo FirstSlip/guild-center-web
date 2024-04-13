@@ -65,7 +65,7 @@ const handlePaste = (event: ClipboardEvent, index: number) => {
 
   &.fill {
     width: 100%;
-    justify-content: center;
+    justify-content: space-between;
   }
 
   .digit {
