@@ -9,6 +9,7 @@
       <UIButton type="secondary" transparent>
         secondary transparent
       </UIButton>
+      <UIButton type="back">back</UIButton>
       <UIButton type="primary" fill>primary filled</UIButton>
       <UIButton type="secondary" fill>secondary filled</UIButton>
       <UIButton type="primary" transparent fill>
@@ -17,6 +18,7 @@
       <UIButton type="secondary" transparent fill>
         secondary transparent filled
       </UIButton>
+      <UIButton type="back" fill>back</UIButton>
     </div>
     <div class="links">
       <p>
