@@ -1,6 +1,11 @@
 <template>
   <form class="auth" @submit.prevent="submit">
-    <h1 class="h4">Добро пожаловать в сервис GuildCenter!</h1>
+    <h1 class="h4" v-if="$slots.header">
+      <slot name="header"></slot>
+    </h1>
+    <h1 class="h4" v-else>
+      Добро пожаловать в сервис GuildCenter!
+    </h1>
     <h2 class="h2">
       <slot name="title"></slot>
     </h2>
@@ -18,36 +23,15 @@
   </form>
 </template>
 <script setup lang="ts">
-type AuthFormType = 'sign-in' | 'sign-up';
-const props = defineProps<{ type?: AuthFormType }>();
 const emits = defineEmits(['submit']);
 defineSlots<{
+  ['header']: [];
   ['title']: [];
   ['inputs']: [];
   ['buttons']: [];
   ['bottom-text']: [];
 }>();
 
-const formBottomText = {
-  'sign-in': {
-    text: 'Нет аккаунта?',
-    link: {
-      to: '/auth/sign-up',
-      text: 'Зарегистрироваться'
-    },
-    buttonText: 'Войти'
-  },
-  'sign-up': {
-    text: 'Есть аккаунт?',
-    link: {
-      to: '/auth/sign-in',
-      text: 'Войти'
-    },
-    buttonText: 'Зарегистрироваться'
-  }
-};
-
-const formType = computed(() => props.type || 'sign-in');
 const submit = () => emits('submit');
 </script>
 <style lang="scss" scoped>

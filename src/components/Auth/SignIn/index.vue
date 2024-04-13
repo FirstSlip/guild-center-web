@@ -1,9 +1,13 @@
 <template>
   <div class="sign-in">
-    <AuthFormWrapper type="sign-in">
+    <AuthFormWrapper @submit="submit">
       <template v-slot:title>Вход</template>
       <template v-slot:inputs>
-        <UIInput placeholder="Email" autocomplete="email" />
+        <UIInput
+          placeholder="Email"
+          autocomplete="email"
+          v-model="email"
+        />
         <UIInput
           placeholder="Пароль"
           type="password"
@@ -30,5 +34,17 @@
     </AuthFormWrapper>
   </div>
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import type { User } from '@/ts/User';
+
+const email = ref('');
+const submit = () => {
+  useState<User | null>('user').value = {
+    name: email.value,
+    tag: '#22822',
+    email: email.value
+  };
+  useRouter().push('/');
+};
+</script>
 <style lang="scss" scoped></style>

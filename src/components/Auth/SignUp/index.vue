@@ -1,6 +1,6 @@
 <template>
   <div class="sign-up">
-    <AuthFormWrapper type="sign-up">
+    <AuthFormWrapper @submit="submit">
       <template v-slot:title>Регистрация</template>
       <template v-slot:inputs>
         <UIInput
@@ -107,10 +107,7 @@ const fields = ref<FieldsType>({
       password === oldPassword
   }
 });
-console.log(fields.value);
-watch(fields, () => {
-  console.log(fields.value);
-});
+
 const validate = (fieldName: keyof FieldsType) => {
   const field = fields.value[fieldName];
   if (field.value === '') {
@@ -140,6 +137,15 @@ const validate = (fieldName: keyof FieldsType) => {
     field.validated = false;
     field.error = true;
   }
+};
+
+const submit = () => {
+  for (const field in fields.value) {
+    if (fields.value[field].validated === false) {
+      return;
+    }
+  }
+  useRouter().push('/auth/sign-up/code');
 };
 </script>
 <style lang="scss" scoped></style>
