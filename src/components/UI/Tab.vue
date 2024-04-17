@@ -1,9 +1,12 @@
 <template>
   <button
-    :class="['tab h5', active && 'active']"
+    :class="['tab', active && 'active']"
     @click="$emit('click')"
   >
-    <slot></slot>
+    <p class="h5">
+      <slot></slot>
+    </p>
+    <div class="underline"></div>
   </button>
 </template>
 
@@ -17,19 +20,39 @@ defineEmits(['click']);
 <style lang="scss" scoped>
 button.tab {
   border: none;
-  border-bottom: 2px solid;
-  border-bottom-color: transparent;
   padding: 0rem 1.25rem;
   color: $text-white;
 
   background: none;
 
   cursor: pointer;
-  transition: all 3s ease;
+  user-select: none;
+  transition: all 0.3s ease;
+
+  &:hover:not(.active) {
+    .underline {
+      width: 10%;
+    }
+  }
 
   &.active {
-    border-color: $text-white;
-    border-bottom-color: $text-white;
+    /* border-color: $text-white;
+    border-bottom-color: $text-white; */
+
+    .underline {
+      width: 100%;
+    }
+  }
+
+  .underline {
+    content: '';
+    width: 0;
+    height: 2px;
+
+    margin: 0 auto;
+    background-color: $white;
+
+    transition: all 0.3s ease;
   }
 }
 </style>
