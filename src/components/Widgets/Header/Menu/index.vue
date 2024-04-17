@@ -13,18 +13,22 @@
 </template>
 <script setup lang="ts">
 const menuItems = [
-  {
+  /* {
     title: 'Главное',
+    href: '/'
+  }, */
+  {
+    title: 'Поиск гильдии',
     href: '/'
   },
   {
     title: 'О проекте',
     href: '/'
   },
-  {
+  /* {
     title: 'test UI',
     href: '/test/ui'
-  },
+  }, */
   {
     title: 'Поддержка',
     href: '/support'
