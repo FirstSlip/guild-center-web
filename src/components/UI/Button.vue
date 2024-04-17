@@ -3,10 +3,15 @@
     @click="$emit('click')"
     :class="[
       'button',
+      font,
       buttonType,
       transparent && 'transparent',
       small && 'small',
       fill && 'fill'
+    ]"
+    :style="[
+      padding && { padding: padding },
+      borderRadius && { borderRadius: borderRadius }
     ]"
   >
     <slot></slot>
@@ -14,14 +19,31 @@
 </template>
 <script setup lang="ts">
 type ButtonVariant = 'primary' | 'secondary' | 'back';
+type FontType =
+  | 'h1'
+  | 'h2'
+  | 'h3'
+  | 'h4'
+  | 'h5'
+  | 'p1'
+  | 'p2'
+  | 'p3'
+  | 'p4'
+  | 'custom-label'
+  | 'inherited';
 
 const props = defineProps<{
   type?: ButtonVariant;
   transparent?: boolean;
   small?: boolean;
   fill?: boolean;
+  padding?: string;
+  fontType?: FontType;
+  borderRadius?: string;
 }>();
 defineEmits(['click']);
+
+const font = computed((): FontType => props.fontType || 'h4');
 
 const buttonType = computed(
   (): ButtonVariant => props.type || 'primary'
@@ -30,15 +52,13 @@ const buttonType = computed(
 <style lang="scss" scoped>
 button.button {
   width: fit-content;
-  padding: 1rem 2.5rem;
+  padding: 0.25rem 2.5rem;
   border: none;
   border-radius: 0.62rem;
-  background-color: #494949;
+  background-color: $main;
 
-  font-weight: 700;
-  font-size: 1.5rem;
   text-align: center;
-  color: #fff;
+  color: $white;
 
   cursor: pointer;
 
