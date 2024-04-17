@@ -44,7 +44,7 @@ const submit = () => {
     tag: '#22822',
     email: email.value
   };
-  useRouter().push('/');
+  useRouter().push('/profile');
 };
 </script>
 <style lang="scss" scoped></style>
