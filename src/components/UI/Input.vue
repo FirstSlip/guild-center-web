@@ -237,6 +237,11 @@ function toggleEye() {
       }
     }
 
+    .icon {
+      display: flex;
+      align-items: center;
+    }
+
     .icons {
       $size: 1.125rem;
       height: 100%;
