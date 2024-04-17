@@ -1,8 +1,11 @@
 <template>
   <div class="user">
     <button class="info" @click="profileClick">
-      <div class="avatar">
-        <WidgetsAvatar :user="user" />
+      <div class="user-avatar">
+        <WidgetsAvatar
+          :name="user.name"
+          :avatarUrl="user.avatar"
+        />
       </div>
       <div class="username">
         <span>{{ user.name }}</span>
@@ -42,15 +45,17 @@ const signOutHover = ref(false);
   gap: 1.625rem;
   align-items: center;
 
-  .avatar {
-    width: 3.12rem;
-    height: 3.12rem;
+  .user-avatar {
+    width: 3.125rem;
+    height: 3.125rem;
   }
 
   .username {
     font-weight: 700;
     font-size: 1.25rem;
     color: #fff;
+
+    text-align: left;
 
     span {
       color: #fff;
