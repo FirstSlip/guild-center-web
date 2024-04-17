@@ -12,14 +12,14 @@
     <div class="guild-buttons">
       <UIButton
         type="primary"
-        @click="useRouter().push('/auth/sign-up')"
+        @click="useRouter().push('/auth/sign-in')"
         transparent
       >
         Найти гильдию
       </UIButton>
       <UIButton
         type="primary"
-        @click="useRouter().push('/auth/sign-up')"
+        @click="useRouter().push('/auth/sign-in')"
       >
         Создать гильдию
       </UIButton>
