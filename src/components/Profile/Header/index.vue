@@ -65,7 +65,7 @@ const switchTab = (index: number) => {
 
 <style lang="scss" scoped>
 section.profile-header {
-  border-radius: 1.25rem;
+  border-radius: 1rem;
   overflow: hidden;
 
   .banner {

@@ -37,7 +37,7 @@ section.integrations {
 
   background-color: $background-light-purple;
 
-  border-radius: 0.25rem;
+  border-radius: 1rem;
 
   display: flex;
   flex-direction: column;
