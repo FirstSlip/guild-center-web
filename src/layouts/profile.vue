@@ -1,9 +1,9 @@
 <template>
   <div>
     <WidgetsHeader />
-    <!-- <div class="bg">
+    <div class="bg">
       <SVGBackground />
-    </div> -->
+    </div>
     <div class="content">
       <div class="cw">
         <ProfileHeader />
@@ -13,11 +13,7 @@
     <WidgetsFooter />
   </div>
 </template>
-<script setup lang="ts">
-const handleVnodeUpdated = () => {
-  console.log('vnode-updated');
-};
-</script>
+<script setup lang="ts"></script>
 <style lang="scss" scoped>
 .bg {
   position: absolute;
@@ -25,7 +21,7 @@ const handleVnodeUpdated = () => {
   left: 0;
   overflow: hidden;
   max-width: 100%;
-  /* z-index: -1; */
+  z-index: -1;
 }
 .content {
   width: 100%;

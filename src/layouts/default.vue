@@ -1,9 +1,9 @@
 <template>
   <div>
     <WidgetsHeader />
-    <!-- <div class="bg">
+    <div class="bg">
       <SVGBackground />
-    </div> -->
+    </div>
     <div class="content">
       <div class="cw">
         <NuxtPage />
@@ -19,7 +19,7 @@
   left: 0;
   overflow: hidden;
   max-width: 100%;
-  /* z-index: -1; */
+  z-index: -1;
 }
 .content {
   width: 100%;
