@@ -325,6 +325,10 @@ function toggleEye() {
     display: flex;
     justify-content: space-between;
 
+    &:not(:has(.error)) {
+      justify-content: flex-end;
+    }
+
     .error {
       color: $text-red;
       font-size: 0.75rem;
