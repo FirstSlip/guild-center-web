@@ -19,6 +19,7 @@ const user = useState<User | null>('user');
 
 const signOut = () => {
   user.value = null;
+  useRouter().push('/');
 };
 </script>
 <style lang="scss" scoped>
