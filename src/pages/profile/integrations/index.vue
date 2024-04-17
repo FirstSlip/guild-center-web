@@ -1,6 +1,6 @@
 <template>
   <div class="profile-integrations">
-    <section class="main"></section>
+    <ProfileIntegrations />
     <ProfileSidebar />
   </div>
 </template>

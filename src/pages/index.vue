@@ -1,11 +1,12 @@
 <template>
-  <div>
-    {{ getData('123') }}
-  </div>
+  <Landing />
 </template>
 <script setup lang="ts">
-const getData = (a: string): string => {
-  return a;
-};
+definePageMeta({
+  pageTransition: {
+    name: 'page-landing',
+    mode: 'out-in'
+  }
+});
 </script>
 <style></style>
