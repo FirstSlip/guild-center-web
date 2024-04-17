@@ -13,7 +13,6 @@
           type="password"
           autocomplete="current-password"
           after-text-position="error-overflow"
-          error="asd"
         >
           <template v-slot:after-text>
             <UILink to="/auth/restore-password" font-type="p4">
