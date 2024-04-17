@@ -8,15 +8,18 @@
 
 <script lang="ts" setup>
 const friends: { name: string; avatarUrl?: string }[] = [
-  { name: 'user1' },
-  { name: 'user2' },
+  { name: 'Степан' },
+  { name: 'Павел' },
   {
     name: 'Алексей',
     avatarUrl:
       'https://eso-hub.com/storage/uploads/user-avatars/PqUQC5gqHKXHX3jOIPhq1PAM8d7QIDwoEdT5j1KI.png'
   }
 ];
-const guilds = [{ name: 'guild1' }, { name: 'guild2' }];
+const guilds = [
+  { name: 'WOW Gaming' },
+  { name: 'POE Community' }
+];
 </script>
 
 <style lang="scss" scoped>
