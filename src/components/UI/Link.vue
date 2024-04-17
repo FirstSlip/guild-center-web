@@ -6,7 +6,7 @@
       linkType,
       fontType && `has-font ${fontType}`
     ]"
-    :style="{ padding: padding }"
+    :style="padding && { padding: padding }"
   >
     <slot></slot>
   </nuxt-link>
