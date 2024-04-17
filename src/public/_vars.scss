@@ -1,48 +1,59 @@
-// Text colors
-$text-white: #e2e2e2;
-$text-white-60: rgba(226, 226, 226, 0.6);
-$text-dark: #19191d;
-$text-dark-60: rgba(25, 25, 29, 0.6);
-$text-light: #63698b;
-$text-red: #f04451;
+// Colors
+$main: #66fcf1;
+$main-60: rgba(7, 198, 191, 0.6);
+$white: #fff;
+$white-60: rgba(255, 255, 255, 0.6);
+$yellow: #ffcd29;
+$yellow-60: rgba(255, 205, 41, 0.6);
+$dark: #19191d;
+$light: #63698b;
+$red: #f04451;
+$light-purple: #202833;
 
-$stroke-white: #e2e2e2;
+// Text colors
+$text-white: $white;
+$text-white-60: $white-60;
+$text-dark: $dark;
+$text-light: $light;
+$text-red: $red;
+
+$stroke-white: $white;
 
 // Bg vars
 $header-background: #121729;
 $footer-background: #121729;
 $background-dark-purple: #08001a;
-$background-light-purple: #202833;
+$background-light-purple: $light-purple;
 
 // Size vars
 $header-height: 6.25rem;
 $main-width: 90.625rem;
 
 // Primary button colors
-$buttonPrimaryBg: #07c6bf;
+$buttonPrimaryBg: $main;
 $buttonPrimaryColor: $text-dark;
-$buttonPrimaryStroke: #07c6bf;
+$buttonPrimaryStroke: $main;
 
-$buttonPrimaryHoverBg: rgba(7, 198, 191, 0.6);
-$buttonPrimaryHoverColor: $text-dark-60;
-$buttonPrimaryHoverStroke: rgba(7, 198, 191, 0.6);
+$buttonPrimaryHoverBg: $main-60;
+$buttonPrimaryHoverColor: $text-dark;
+$buttonPrimaryHoverStroke: $main-60;
 
-$buttonPrimaryActiveBg: rgba(7, 198, 191, 0.6);
-$buttonPrimaryActiveColor: $text-dark-60;
-$buttonPrimaryActiveStroke: rgba(7, 198, 191, 0.6);
+$buttonPrimaryActiveBg: $main-60;
+$buttonPrimaryActiveColor: $text-dark;
+$buttonPrimaryActiveStroke: $main-60;
 
 // Secondary button colors
-$buttonSecondaryBg: #ffcd29;
+$buttonSecondaryBg: $yellow;
 $buttonSecondaryColor: $text-dark;
-$buttonSecondaryStroke: #ffcd29;
+$buttonSecondaryStroke: $yellow;
 
-$buttonSecondaryHoverBg: rgba(255, 205, 41, 0.6);
-$buttonSecondaryHoverColor: $text-dark-60;
-$buttonSecondaryHoverStroke: rgba(255, 205, 41, 0.6);
+$buttonSecondaryHoverBg: $yellow-60;
+$buttonSecondaryHoverColor: $text-dark;
+$buttonSecondaryHoverStroke: $yellow-60;
 
-$buttonSecondaryActiveBg: rgba(255, 205, 41, 0.6);
-$buttonSecondaryActiveColor: $text-dark-60;
-$buttonSecondaryActiveStroke: rgba(255, 205, 41, 0.6);
+$buttonSecondaryActiveBg: $yellow-60;
+$buttonSecondaryActiveColor: $text-dark;
+$buttonSecondaryActiveStroke: $yellow-60;
 
 // Back button colors
 $buttonBackBg: #999;
@@ -60,52 +71,52 @@ $buttonBackActiveStroke: rgba(226, 226, 226, 0.6);
 // Primary transparent button colors
 $buttonPrimaryTransparentBg: transparent;
 $buttonPrimaryTransparentColor: $text-white;
-$buttonPrimaryTransparentStroke: #07c6bf;
+$buttonPrimaryTransparentStroke: $main;
 
 $buttonPrimaryTransparentHoverBg: transparent;
 $buttonPrimaryTransparentHoverColor: $text-white-60;
-$buttonPrimaryTransparentHoverStroke: rgba(7, 198, 191, 0.6);
+$buttonPrimaryTransparentHoverStroke: $main-60;
 
 $buttonPrimaryTransparentActiveBg: transparent;
 $buttonPrimaryTransparentActiveColor: $text-white-60;
-$buttonPrimaryTransparentActiveStroke: rgba(7, 198, 191, 0.6);
+$buttonPrimaryTransparentActiveStroke: $main-60;
 
 // Secondary transparent button colors
 $buttonSecondaryTransparentBg: transparent;
 $buttonSecondaryTransparentColor: $text-white;
-$buttonSecondaryTransparentStroke: #ffcd29;
+$buttonSecondaryTransparentStroke: $yellow;
 
 $buttonSecondaryTransparentHoverBg: transparent;
 $buttonSecondaryTransparentHoverColor: $text-white-60;
-$buttonSecondaryTransparentHoverStroke: rgba(255, 205, 41, 0.6);
+$buttonSecondaryTransparentHoverStroke: $yellow-60;
 
 $buttonSecondaryTransparentActiveBg: transparent;
 $buttonSecondaryTransparentActiveColor: $text-white-60;
-$buttonSecondaryTransparentActiveStroke: rgba(255, 205, 41, 0.6);
+$buttonSecondaryTransparentActiveStroke: $yellow-60;
 
 // Link primary colors
-$linkPrimaryColor: #07c6bf;
+$linkPrimaryColor: $main;
 
-$linkPrimaryHoverColor: rgba(7, 198, 191, 0.6);
+$linkPrimaryHoverColor: $main-60;
 
-$linkPrimaryActiveColor: rgba(7, 198, 191, 0.6);
+$linkPrimaryActiveColor: $main;
 
 // Link secondary colors
-$linkSecondaryColor: #e2e2e2;
+$linkSecondaryColor: $white;
 
-$linkSecondaryHoverColor: rgba(226, 226, 226, 0.6);
+$linkSecondaryHoverColor: $white-60;
 
-$linkSecondaryActiveColor: rgba(226, 226, 226, 0.6);
+$linkSecondaryActiveColor: $white-60;
 
 // Input colors
 $inputColor: rgba(226, 226, 226, 0.6);
 $inputStroke: rgba(226, 226, 226, 0.6);
 $inputPlaceholderColor: rgba(226, 226, 226, 0.6);
 
-$inputHoverColor: #e2e2e2;
-$inputHoverStroke: #e2e2e2;
-$inputPlaceholderHoverColor: #e2e2e2;
+$inputHoverColor: $white;
+$inputHoverStroke: $white;
+$inputPlaceholderHoverColor: $white;
 
-$inputActiveColor: #e2e2e2;
-$inputActiveStroke: #e2e2e2;
-$inputPlaceholderActiveColor: #e2e2e2;
+$inputActiveColor: $white;
+$inputActiveStroke: $white;
+$inputPlaceholderActiveColor: $white;
