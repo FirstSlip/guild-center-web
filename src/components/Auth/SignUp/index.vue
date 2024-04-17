@@ -145,7 +145,9 @@ const submit = () => {
       return;
     }
   }
-  useRouter().push('/auth/sign-up/code');
+  useRouter().push(
+    `/auth/sign-up/code?name=${fields.value.username.value}`
+  );
 };
 </script>
 <style lang="scss" scoped></style>
