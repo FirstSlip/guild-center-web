@@ -20,6 +20,7 @@
           font-type="h5"
           padding="0 1.25rem"
           border-radius="0.25rem"
+          @click="$router.push('/profile/settings')"
         >
           Редактировать профиль
         </UIButton>
@@ -36,9 +37,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { User } from '@/ts/User';
-
-const user = computed(() => useState<User | null>('user').value);
+const user = computed(() => useProfile().user.value);
 /* const props = defineProps<{
   currentTab: string;
 }>(); */
@@ -70,7 +69,8 @@ section.profile-header {
 
   .banner {
     width: 100%;
-    height: 12.5rem;
+    /* height: 12.5rem; */
+    aspect-ratio: 5 / 1;
 
     background: linear-gradient(
       235deg,
@@ -106,10 +106,10 @@ section.profile-header {
         min-height: 7.5rem;
 
         position: absolute;
-        top: -100%;
+        top: calc(-100% + 0.375rem);
 
+        border: 6px solid $background-light-purple;
         border-radius: 100%;
-        box-shadow: 0px 0px 16px 2px rgba(0, 0, 0, 0.4);
       }
 
       .info {
