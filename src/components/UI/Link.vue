@@ -12,8 +12,10 @@
   </nuxt-link>
 </template>
 <script setup lang="ts">
+import type { FontType } from '@/ts/FontType';
+
 type LinkVariant = 'primary' | 'secondary';
-type FontType =
+/* type FontType =
   | 'h1'
   | 'h2'
   | 'h3'
@@ -24,7 +26,7 @@ type FontType =
   | 'p3'
   | 'p4'
   | 'custom-label'
-  | 'inherited';
+  | 'inherited'; */
 
 const props = defineProps<{
   to: string;
@@ -33,7 +35,7 @@ const props = defineProps<{
   uppercase?: boolean;
   disabled?: boolean;
   fill?: boolean;
-  fontType?: FontType;
+  fontType?: FontType | 'inherited';
 }>();
 
 const linkType = computed(

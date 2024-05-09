@@ -3,6 +3,7 @@
     <UITab
       v-for="(tab, index) in tabs"
       :key="index"
+      :type="tabsType"
       :active="activeTab === index"
       @click="tabChange(index)"
     >
@@ -14,9 +15,12 @@
 <script lang="ts" setup>
 defineProps<{
   tabs: string[];
+  tabsType?: 'primary' | 'secondary';
   activeTab: number;
 }>();
-const emits = defineEmits(['click']);
+const emits = defineEmits<{
+  (e: 'click', index: number): void;
+}>();
 
 const tabChange = (index: number) => {
   emits('click', index);

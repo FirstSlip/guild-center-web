@@ -1,6 +1,6 @@
 <template>
   <button
-    :class="['tab', active && 'active']"
+    :class="['tab', active && 'active', tabType]"
     @click="$emit('click')"
   >
     <p class="h5">
@@ -11,16 +11,18 @@
 </template>
 
 <script lang="ts" setup>
-defineProps<{
+const props = defineProps<{
   active?: boolean;
+  type?: 'primary' | 'secondary';
 }>();
 defineEmits(['click']);
+
+const tabType = computed(() => props.type || 'primary');
 </script>
 
 <style lang="scss" scoped>
 button.tab {
   border: none;
-  padding: 0rem 1.25rem;
   color: $text-white;
 
   background: none;
@@ -36,18 +38,34 @@ button.tab {
   }
 
   &.active {
-    /* border-color: $text-white;
-    border-bottom-color: $text-white; */
-
     .underline {
       width: 100%;
+    }
+  }
+
+  &.primary {
+    padding: 0rem 1.25rem;
+
+    .underline {
+      height: 2px;
+    }
+  }
+
+  &.secondary {
+    padding: 0rem 0;
+
+    .underline {
+      height: 6px;
+    }
+
+    p {
+      padding: 0rem 1.25rem;
     }
   }
 
   .underline {
     content: '';
     width: 0;
-    height: 2px;
 
     margin: 0 auto;
     background-color: $white;

@@ -6,40 +6,31 @@
       font,
       buttonType,
       transparent && 'transparent',
-      small && 'small',
-      fill && 'fill'
+      fill && 'fill',
+      disabled && 'disabled'
     ]"
     :style="[
       padding && { padding: padding },
       borderRadius && { borderRadius: borderRadius }
     ]"
+    :disabled="disabled || false"
   >
     <slot></slot>
   </button>
 </template>
 <script setup lang="ts">
-type ButtonVariant = 'primary' | 'secondary' | 'back';
-type FontType =
-  | 'h1'
-  | 'h2'
-  | 'h3'
-  | 'h4'
-  | 'h5'
-  | 'p1'
-  | 'p2'
-  | 'p3'
-  | 'p4'
-  | 'custom-label'
-  | 'inherited';
+import type { FontType } from '@/ts/FontType';
+
+type ButtonVariant = 'primary' | 'secondary' | 'back' | 'blank';
 
 const props = defineProps<{
   type?: ButtonVariant;
   transparent?: boolean;
-  small?: boolean;
   fill?: boolean;
   padding?: string;
   fontType?: FontType;
   borderRadius?: string;
+  disabled?: boolean;
 }>();
 defineEmits(['click']);
 
@@ -66,6 +57,14 @@ button.button {
 
   &.fill {
     width: 100%;
+    padding: 0.25rem 0.5rem;
+  }
+
+  &.disabled {
+    background: $light-gray !important;
+    color: $text-white !important;
+
+    cursor: not-allowed !important;
   }
 
   &.primary {
@@ -158,6 +157,26 @@ button.button {
       background-color: $buttonBackActiveBg;
       color: $buttonBackActiveColor;
       border-color: $buttonBackActiveStroke;
+    }
+  }
+
+  &.blank {
+    border: none;
+
+    background-color: $buttonBlankBg;
+    color: $buttonBlankColor;
+    border-color: $buttonBlankStroke;
+
+    &:hover {
+      background-color: $buttonBlankHoverBg;
+      color: $buttonBlankHoverColor;
+      border-color: $buttonBlankHoverStroke;
+    }
+
+    &:active {
+      background-color: $buttonBlankActiveBg;
+      color: $buttonBlankActiveColor;
+      border-color: $buttonBlankActiveStroke;
     }
   }
 }
