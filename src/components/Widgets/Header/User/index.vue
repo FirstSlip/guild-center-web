@@ -1,6 +1,17 @@
 <template>
   <div class="user">
-    <button class="info" @click="profileClick">
+    <div class="links">
+      <nuxt-link to="/profile/friends">
+        <SVGFriends />
+      </nuxt-link>
+      <nuxt-link to="/chat">
+        <SVGChat />
+      </nuxt-link>
+      <nuxt-link to="/profile/guilds">
+        <SVGCastle stroke="#66FCF1" />
+      </nuxt-link>
+    </div>
+    <nuxt-link to="/profile" class="info">
       <div class="user-avatar">
         <WidgetsAvatar
           :name="user.name"
@@ -12,7 +23,7 @@
         <br />
         <span>{{ user.tag }}</span>
       </div>
-    </button>
+    </nuxt-link>
     <button
       class="sign-out"
       @mouseover="signOutHover = true"
@@ -27,23 +38,42 @@
 <script lang="ts" setup>
 import type { User } from '@/ts/User';
 
-const props = defineProps<{
+defineProps<{
   user: User;
 }>();
 defineEmits(['sign-out']);
-
-const profileClick = () => {
-  useRouter().push('/profile');
-};
 
 const signOutHover = ref(false);
 </script>
 
 <style lang="scss" scoped>
 .user {
+  height: 100%;
   display: flex;
   gap: 1.625rem;
   align-items: center;
+
+  .links {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+
+    a {
+      height: max(80%, 2rem);
+      aspect-ratio: 1 / 1;
+
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        max-width: 2rem;
+        max-height: 2rem;
+      }
+    }
+  }
 
   .user-avatar {
     width: 3.125rem;
@@ -62,7 +92,7 @@ const signOutHover = ref(false);
     }
   }
 
-  button.info {
+  a.info {
     display: flex;
     align-items: center;
     gap: 0.625rem;
@@ -70,6 +100,8 @@ const signOutHover = ref(false);
     border: none;
     background: none;
     cursor: pointer;
+
+    text-decoration: none;
   }
 
   button.sign-out {

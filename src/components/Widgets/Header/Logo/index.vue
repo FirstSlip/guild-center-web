@@ -1,11 +1,11 @@
 <template>
-  <button class="logo" @click="useRouter().push('/')">
+  <nuxt-link to="/" class="logo">
     <SVGLogo />
-  </button>
+  </nuxt-link>
 </template>
 <script setup lang="ts"></script>
 <style lang="scss" scoped>
-.logo {
+a.logo {
   height: 100%;
   max-height: 100%;
 

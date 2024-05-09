@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import type { User } from '@/ts/User';
 
-const user = useState<User | null>('user');
+const user = useProfile().user;
 
 const signOut = () => {
   user.value = null;

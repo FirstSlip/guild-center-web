@@ -1,5 +1,5 @@
 <template>
-  <div class="menu">
+  <nav class="menu">
     <UILink
       v-for="(item, index) in menuItems"
       :key="index"
@@ -9,7 +9,7 @@
     >
       {{ item.title }}
     </UILink>
-  </div>
+  </nav>
 </template>
 <script setup lang="ts">
 const menuItems = [
@@ -36,7 +36,7 @@ const menuItems = [
 ];
 </script>
 <style lang="scss" scoped>
-.menu {
+nav.menu {
   display: flex;
   gap: 1.125rem;
 }
