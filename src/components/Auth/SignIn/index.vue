@@ -34,15 +34,18 @@
   </div>
 </template>
 <script setup lang="ts">
-import type { User } from '@/ts/User';
-
 const email = ref('');
 const submit = () => {
-  useState<User | null>('user').value = {
+  /* useState<User | null>('user').value = {
     name: email.value,
     tag: '#22822',
     email: email.value
-  };
+  }; */
+  useProfile().setUser({
+    name: email.value,
+    tag: '#22822',
+    email: email.value
+  });
   useRouter().push('/profile');
 };
 </script>

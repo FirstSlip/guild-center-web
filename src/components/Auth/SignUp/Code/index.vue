@@ -20,11 +20,16 @@
 import type { User } from '@/ts/User';
 
 const submit = () => {
-  useState<User | null>('user').value = {
+  /* useState<User | null>('user').value = {
     name: useRoute().query.name,
     tag: '#21822',
     email: 'ilya@mail.ru'
-  };
+  }; */
+  useProfile().setUser({
+    name: useRoute().query.name,
+    tag: '#21822',
+    email: 'ilya@mail.ru'
+  });
   useRouter().push('/profile');
 };
 </script>

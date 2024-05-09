@@ -79,7 +79,7 @@ const fields = ref<FieldsType>({
     error: false,
     validated: false,
     validate: (username: string) =>
-      username.length > 8 && username.length < 16
+      username.length >= 4 && username.length <= 16
   },
   email: {
     value: '',
@@ -88,9 +88,7 @@ const fields = ref<FieldsType>({
     validate: (email: string) =>
       !!String(email)
         .toLowerCase()
-        .match(
-          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        )
+        .match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)
   },
   password: {
     value: '',
