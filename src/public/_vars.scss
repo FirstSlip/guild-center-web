@@ -5,9 +5,13 @@ $white: #fff;
 $white-60: rgba(255, 255, 255, 0.6);
 $yellow: #ffcd29;
 $yellow-60: rgba(255, 205, 41, 0.6);
+$gray: #4c5d75;
+$light-gray: #7d7d7d;
 $dark: #19191d;
 $light: #63698b;
+$line-light: #5d728e;
 $red: #f04451;
+$dark-purple: #0b0c10;
 $light-purple: #202833;
 
 // Text colors
@@ -16,12 +20,14 @@ $text-white-60: $white-60;
 $text-dark: $dark;
 $text-light: $light;
 $text-red: $red;
+$text-main: $main;
+$text-main-60: $main-60;
 
 $stroke-white: $white;
 
 // Bg vars
-$header-background: #121729;
-$footer-background: #121729;
+$header-background: #111d2f;
+$footer-background: #111d2f;
 $background-dark-purple: #08001a;
 $background-light-purple: $light-purple;
 
@@ -68,6 +74,19 @@ $buttonBackActiveBg: inherit;
 $buttonBackActiveColor: $text-white-60;
 $buttonBackActiveStroke: rgba(226, 226, 226, 0.6);
 
+// Blank button colors
+$buttonBlankBg: transparent;
+$buttonBlankColor: $text-main;
+$buttonBlankStroke: transparent;
+
+$buttonBlankHoverBg: transparent;
+$buttonBlankHoverColor: $text-main-60;
+$buttonBlankHoverStroke: transparent;
+
+$buttonBlankActiveBg: transparent;
+$buttonBlankActiveColor: $text-main-60;
+$buttonBlankActiveStroke: transparent;
+
 // Primary transparent button colors
 $buttonPrimaryTransparentBg: transparent;
 $buttonPrimaryTransparentColor: $text-white;
@@ -109,9 +128,9 @@ $linkSecondaryHoverColor: $white-60;
 $linkSecondaryActiveColor: $white-60;
 
 // Input colors
-$inputColor: rgba(226, 226, 226, 0.6);
-$inputStroke: rgba(226, 226, 226, 0.6);
-$inputPlaceholderColor: rgba(226, 226, 226, 0.6);
+$inputColor: $white-60;
+$inputStroke: $white-60;
+$inputPlaceholderColor: $white-60;
 
 $inputHoverColor: $white;
 $inputHoverStroke: $white;
@@ -120,3 +139,25 @@ $inputPlaceholderHoverColor: $white;
 $inputActiveColor: $white;
 $inputActiveStroke: $white;
 $inputPlaceholderActiveColor: $white;
+
+// Input Secondary colors
+$inputSecondaryColor: $white;
+$inputSecondaryPlaceholderColor: $white-60;
+
+$inputSecondaryHoverColor: $white;
+$inputSecondaryPlaceholderHoverColor: $white-60;
+
+$inputSecondaryActiveColor: $white;
+$inputSecondaryPlaceholderActiveColor: $white-60;
+
+// Select colors
+$selectColor: $white-60;
+$selectBg: transparent;
+
+$selectHoverColor: $white;
+$selectHoverBg: #303d4d;
+
+$selectActiveColor: $main;
+$selectActiveBg: $light-purple;
+
+$selectOpenedColor: $white;
