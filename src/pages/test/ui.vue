@@ -19,6 +19,7 @@
         secondary transparent filled
       </UIButton>
       <UIButton type="back" fill>back</UIButton>
+      <UIButton type="primary" fill disabled>disabled</UIButton>
     </div>
     <div class="links">
       <p>
@@ -72,6 +73,17 @@
       />
       <UIInput error="Error" />
       <UIInput validated />
+    </div>
+    <div class="inputs">
+      <UIInputSecondary />
+      <UIInputSecondary type="password" placeholder="Password" />
+      <UIInputSecondary
+        type="password"
+        placeholder="Password"
+        error="Error"
+      />
+      <UIInputSecondary error="Error" />
+      <UIInputSecondary validated />
     </div>
     <div class="code-inputs">
       default
