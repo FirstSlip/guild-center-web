@@ -9,7 +9,6 @@ export default defineNuxtConfig({
     }
   },
   vue: {
-    defineModel: true,
     propsDestructure: true
   },
   srcDir: './src/',
