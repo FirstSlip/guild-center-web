@@ -5,9 +5,8 @@
 </template>
 
 <script setup lang="ts">
-import type { User } from './ts/User';
-
-useState<User | null>('user', () => null);
+await useProfile().loadProfile();
+console.log(useProfile().user.value);
 </script>
 
 <style lang="scss">
