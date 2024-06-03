@@ -1,9 +1,9 @@
 <template>
   <div>
     <WidgetsHeader />
-    <div class="bg">
+    <!-- <div class="bg">
       <SVGBackground />
-    </div>
+    </div> -->
     <div class="content">
       <div class="cw">
         <ProfileHeader />
