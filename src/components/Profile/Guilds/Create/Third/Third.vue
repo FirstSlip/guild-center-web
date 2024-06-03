@@ -133,8 +133,9 @@ let scrollLeft: number;
 
 function startDragging(event: MouseEvent) {
   isDragging = true;
-  startX = event.pageX - event.currentTarget.offsetLeft;
-  scrollLeft = event.currentTarget.scrollLeft;
+  startX =
+    event.pageX - (<HTMLElement>event.currentTarget).offsetLeft;
+  scrollLeft = (<HTMLElement>event.currentTarget).scrollLeft;
 }
 
 function stopDragging() {
@@ -145,9 +146,11 @@ function drag(event: MouseEvent) {
   console.log(isDragging);
   if (!isDragging) return;
   event.preventDefault();
-  const x = event.pageX - event.currentTarget.offsetLeft;
+  const x =
+    event.pageX - (<HTMLElement>event.currentTarget).offsetLeft;
   const walk = (x - startX) * 2;
-  event.currentTarget.scrollLeft = scrollLeft - walk;
+  (<HTMLElement>event.currentTarget).scrollLeft =
+    scrollLeft - walk;
 }
 </script>
 
