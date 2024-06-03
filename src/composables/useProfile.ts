@@ -1,14 +1,22 @@
-import type { User } from '@/ts/User';
+import type { UserMe } from '@/ts/UserMe';
 
 export const useProfile = () => {
-  const user = useState<User | null>('user', () => null);
+  const user = useState<UserMe | null>('user', () => null);
 
-  const setUser = (account: User) => {
+  const setUser = (account: UserMe) => {
     user.value = account;
+  };
+
+  const loadProfile = async () => {
+    const response = await $api.user.me();
+    if ($api.utils.isSuccess(response)) {
+      setUser(response.data.user);
+    }
   };
 
   return {
     user,
-    setUser
+    setUser,
+    loadProfile
   };
 };
