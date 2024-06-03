@@ -1,19 +1,39 @@
-import type { UseFetchOptions } from 'nuxt/app';
+import type { ErrorCodes } from '@/ts/error/codes';
+import type { MixedResponse } from '@/ts/request';
 
-export const request = <T>(
+type FetchOptions = Parameters<typeof $fetch>['1'];
+
+export const request = async <
+  T,
+  ECodes extends ErrorCodes = ErrorCodes
+>(
   path: string,
-  opts?: UseFetchOptions<any>
+  opts?: FetchOptions
 ) => {
   const runtimeConfig = useRuntimeConfig();
-  const token = useCookie('token', {
-    maxAge: 60 * 60 * 24 * 30
-  });
+  const token = useCookie('token');
+  console.log('token1', token.value);
 
-  return useFetch<T>(`${runtimeConfig.public.apiUrl}/${path}`, {
-    headers: {
-      Authorization: `Bearer ${token.value}`,
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
-    }
-  });
+  const options = opts || {};
+
+  options.headers = options.headers || {};
+  options.headers = {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${token.value}`
+  };
+
+  return await $fetch<MixedResponse<T, ECodes>>(
+    `${runtimeConfig.public.apiUrl}/${path}`,
+    options
+  );
+  /* try {
+    return new Promise((res) => {
+      $fetch(`${runtimeConfig.public.apiUrl}/${path}`, options)
+        .then((data) => res(data as MixedResponse<T, ECodes>))
+        .catch(() => res(null));
+    });
+  } catch (err) {
+    return null;
+  } */
 };
