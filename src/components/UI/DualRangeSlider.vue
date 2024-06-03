@@ -152,6 +152,7 @@ watch(toValue, () => {
         outline: none;
         width: 100%;
 
+        appearance: textfield;
         -moz-appearance: textfield;
 
         &::-webkit-outer-spin-button,
@@ -186,6 +187,7 @@ input[type='range']::-webkit-slider-thumb {
 }
 
 input[type='range']::-moz-range-thumb {
+  appearance: textfield;
   -webkit-appearance: none;
   pointer-events: all;
   width: 30px;
