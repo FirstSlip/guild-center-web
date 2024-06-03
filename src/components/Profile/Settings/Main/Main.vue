@@ -4,7 +4,7 @@
       <h2 class="h4">Никнейм</h2>
       <UIInputSecondary
         fill
-        placeholder="Никнейм"
+        :placeholder="shownUsername"
         v-model="username"
       />
       <p class="p2">
@@ -20,9 +20,13 @@
             <WidgetsAvatar
               v-if="!avatarSrc"
               :avatar-url="user?.avatar"
-              :name="user?.name || 'Error'"
+              :name="user?.shownUsername || 'Error'"
             />
-            <img v-else :src="avatarSrc" :alt="user?.name" />
+            <img
+              v-else
+              :src="avatarSrc"
+              :alt="user?.shownUsername"
+            />
           </div>
         </div>
         <p class="p2">
@@ -58,7 +62,7 @@
         <h2 class="h4">Обо мне</h2>
         <UITextarea
           fill
-          v-model="about"
+          v-model="description"
           name="about"
           id="about"
         />
@@ -76,7 +80,11 @@
           v-if="!bannerSrc"
           :style="`background-color: ${bannerDefaultColor}`"
         ></div>
-        <img v-else :src="bannerSrc" :alt="user?.name" />
+        <img
+          v-else
+          :src="bannerSrc"
+          :alt="user?.shownUsername"
+        />
       </div>
       <p class="p2">
         <span>Рекомендуемое разрешение</span>
@@ -112,6 +120,17 @@
 
 <script lang="ts" setup>
 import { generateAvatarColor } from '@/common/func/generateAvatarColor';
+import { toBase64 } from '@/common/func/toBase64';
+
+defineProps<{
+  shownUsername: string;
+}>();
+const emit = defineEmits<{
+  (e: 'changeUsername', username: string): void;
+  (e: 'changeDescription', description: string): void;
+  (e: 'changeBanner', banner: string): void;
+  (e: 'changeAvatar', avatar: string): void;
+}>();
 
 const avatarFileInput = ref<HTMLInputElement | null>(null);
 const bannerFileInput = ref<HTMLInputElement | null>(null);
@@ -126,11 +145,11 @@ const openSelector = (type: 'avatar' | 'banner') => {
 };
 
 const deleteAvatar = () => {
-  avatarSrc.value = null;
+  avatarSrc.value = '';
 };
 
 const deleteBanner = () => {
-  bannerSrc.value = null;
+  bannerSrc.value = '';
 };
 
 /* const avatarSrc = ref<string | null>(null); */
@@ -138,54 +157,56 @@ const deleteBanner = () => {
 const username = defineModel<string>('username', {
   default: ''
 });
-const avatarSrc = defineModel<string | null>('avatarSrc', {
+const avatarSrc = defineModel<string>('avatarSrc', {
   default: null
 });
-const about = defineModel<string>('about', {
+const description = defineModel<string>('description', {
   default: ''
 });
-const bannerSrc = defineModel<string | null>('bannerSrc', {
+const bannerSrc = defineModel<string>('bannerSrc', {
   default: null
 });
 
-watch(username, () => {
-  console.log(username.value);
-});
+/* watch([username, avatarSrc, about, bannerSrc], () => {
+  console.log(
+    username.value,
+    avatarSrc.value,
+    about.value,
+    bannerSrc.value
+  );
+  emit('change', {
+    username: username.value,
+    avatarSrc: avatarSrc.value,
+    about: about.value,
+    bannerSrc: bannerSrc.value
+  });
+}); */
 
-const changeAvatar = (e: Event) => {
-  /* console.log(e.currentTarget?.files); */
+const changeAvatar = async (e: Event) => {
   const [file] = (<HTMLInputElement>e.target).files || [];
   if (file) {
-    avatarSrc.value = URL.createObjectURL(file);
-  }
-  /* var file = this.files[0];
-    var reader = new FileReader();
-
-    reader.onload = function(e) {
-        document.getElementById('imagePreview').src = e.target.result;
+    const base64 = await toBase64(file);
+    if (typeof base64 === 'string') {
+      avatarSrc.value = base64;
+      emit('changeAvatar', base64);
     }
-
-    reader.readAsDataURL(file); */
+  }
 };
 
-const changeBanner = (e: Event) => {
-  /* console.log(e.currentTarget?.files); */
+const changeBanner = async (e: Event) => {
   const [file] = (<HTMLInputElement>e.target).files || [];
   if (file) {
-    bannerSrc.value = URL.createObjectURL(file);
-  }
-  /* var file = this.files[0];
-    var reader = new FileReader();
-
-    reader.onload = function(e) {
-        document.getElementById('imagePreview').src = e.target.result;
+    const base64 = await toBase64(file);
+    if (typeof base64 === 'string') {
+      bannerSrc.value = base64;
     }
-
-    reader.readAsDataURL(file); */
+  }
 };
 
 const bannerDefaultColor = computed(() => {
-  return generateAvatarColor(user.value?.name || 'Error');
+  return generateAvatarColor(
+    user.value?.shownUsername || 'Error'
+  ).bg;
 });
 </script>
 

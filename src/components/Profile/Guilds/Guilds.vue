@@ -12,10 +12,20 @@
       />
     </div>
     <div class="buttons">
-      <UIButton type="primary" fill transparent>
+      <UIButton
+        type="primary"
+        fill
+        transparent
+        @click="$router.push('/guild/find')"
+      >
         Найти гильдию
       </UIButton>
-      <UIButton type="primary" fill transparent>
+      <UIButton
+        type="primary"
+        fill
+        transparent
+        @click="$router.push('/profile/guilds/create')"
+      >
         Создать гильдию
       </UIButton>
     </div>

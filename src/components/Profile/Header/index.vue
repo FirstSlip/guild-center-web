@@ -1,20 +1,27 @@
 <template>
   <section class="profile-header">
-    <div class="banner"></div>
+    <div
+      class="banner"
+      :style="
+        user?.banner
+          ? `background-image: url(${user.banner})`
+          : `background: ${bannerColor}`
+      "
+    ></div>
     <div class="main">
       <div class="user-info">
         <div class="user-avatar">
           <WidgetsAvatar
             :avatar-url="user?.avatar"
-            :name="user?.name || 'Error'"
+            :name="user?.shownUsername || 'Error'"
           />
         </div>
         <div class="info">
           <h1 class="h4">
-            <span>{{ user?.name || 'Error' }}</span>
-            <span>{{ user?.tag || 'Error' }}</span>
+            <span>{{ user?.shownUsername || 'Error' }}</span>
+            <span>#{{ user?.tag || 'Error' }}</span>
           </h1>
-          <span class="h5">статус “обо мне”</span>
+          <span class="h5">{{ user?.description || '' }}</span>
         </div>
         <UIButton
           font-type="h5"
@@ -37,10 +44,18 @@
 </template>
 
 <script lang="ts" setup>
-const user = computed(() => useProfile().user.value);
+import { generateAvatarColor } from '@/common/func/generateAvatarColor';
+
+const user = useProfile().user;
+console.log('user', user.value);
 /* const props = defineProps<{
   currentTab: string;
 }>(); */
+const bannerColor = computed(() => {
+  return generateAvatarColor(
+    user.value?.shownUsername || 'Error'
+  ).bg;
+});
 const currentTab = computed(() => useRoute().path);
 const tabs = [
   { title: 'комментарии', href: '/profile' },
@@ -119,10 +134,20 @@ section.profile-header {
           display: flex;
           gap: 1rem;
         }
+
+        span.h5 {
+          text-overflow: ellipsis;
+          word-wrap: break-word;
+
+          display: block;
+          min-height: calc(1rem * 1.55);
+          min-width: 1rem;
+        }
       }
 
       button {
         margin-top: 0.375rem;
+        flex-shrink: 0;
       }
     }
 

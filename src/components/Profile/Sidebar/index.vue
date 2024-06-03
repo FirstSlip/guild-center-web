@@ -20,6 +20,11 @@ const guilds = [
   { name: 'WOW Gaming' },
   { name: 'POE Community' }
 ];
+/* const x = await $api.auth.signIn({
+  username: 'ilya@mail.ru',
+  password: '123'
+});
+console.log('x', x.pending.value, x.data.value, x.error.value); */
 </script>
 
 <style lang="scss" scoped>

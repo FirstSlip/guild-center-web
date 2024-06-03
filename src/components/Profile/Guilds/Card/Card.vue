@@ -34,7 +34,7 @@ const props = defineProps<{
 }>();
 
 const bannerColor = computed(() => {
-  return generateAvatarColor(props.guild.name);
+  return generateAvatarColor(props.guild.name).bg;
 });
 </script>
 

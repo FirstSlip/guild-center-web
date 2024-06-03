@@ -13,7 +13,12 @@
       <slot></slot>
     </div>
     <div class="buttons">
-      <UIButton type="primary" fontType="h5" disabled>
+      <UIButton
+        type="primary"
+        fontType="h5"
+        :disabled="!wasChanged"
+        @click="$emit('save')"
+      >
         Сохранить изменения
       </UIButton>
       <UIButton type="blank" fontType="h5">
@@ -27,8 +32,12 @@
 defineProps<{
   currentTab: number;
   tabs: string[];
+  wasChanged?: boolean;
 }>();
-defineEmits<{ (e: 'switchTab', index: number): void }>();
+defineEmits<{
+  (e: 'switchTab', index: number): void;
+  (e: 'save'): void;
+}>();
 /* const currentTab = computed(() => useRoute().path); */
 /* const tabs = [
   { title: 'Профиль', href: '/profile/settings' },
