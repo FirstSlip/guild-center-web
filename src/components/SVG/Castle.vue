@@ -18,7 +18,12 @@ const props = defineProps<{
   stroke?: string;
 }>();
 
-const strokeColor = computed(() => props.stroke || '#6D6D6D');
+const strokeColor = computed(() => props.stroke || '#800000');
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+svg {
+  width: 100%;
+  height: 100%;
+}
+</style>
