@@ -50,6 +50,10 @@ const model = defineModel<string>();
     &:focus-visible {
       outline: none;
     }
+
+    &::-webkit-scrollbar {
+      border-radius: 0.375rem;
+    }
   }
 }
 </style>

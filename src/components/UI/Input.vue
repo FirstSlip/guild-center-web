@@ -8,6 +8,7 @@
         fill && 'fill',
         type === 'password' && 'password'
       ]"
+      :style="bgColor && { 'background-color': bgColor }"
     >
       <div v-if="$slots['before-icon']" class="icon">
         <slot name="before-icon"></slot>
@@ -85,6 +86,7 @@ type Props = {
   autocomplete?: InputHTMLAttributes['autocomplete'];
   readonly?: InputHTMLAttributes['readonly'];
   afterTextPosition?: AfterTextPositionType;
+  bgColor?: string;
 };
 
 const props = defineProps<Props>();

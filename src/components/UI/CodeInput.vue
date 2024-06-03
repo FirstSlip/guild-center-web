@@ -17,15 +17,25 @@
 const props = defineProps<{
   length?: number;
   fill?: boolean;
+  isNumber?: boolean;
 }>();
+
+const model = defineModel<string>();
 
 const codeLength = computed(() => props.length || 4);
 
 const code = ref(Array(codeLength.value).fill(''));
+watch(
+  code,
+  () => {
+    model.value = code.value.join('');
+  },
+  { deep: true }
+);
 const digitRefs = ref<Array<HTMLInputElement | null>>([]);
 
 const focusNext = (index: number) => {
-  if (isNaN(code.value[index])) {
+  if (props.isNumber && isNaN(code.value[index])) {
     code.value[index] = '';
     return;
   }
@@ -44,15 +54,21 @@ const focusNext = (index: number) => {
 };
 const handlePaste = (event: ClipboardEvent, index: number) => {
   const pastedData = event.clipboardData?.getData('text') || '';
-  const pastedDigits = pastedData
+  const pasted = pastedData.split('');
+  let pastedDigits = pasted;
+  if (props.isNumber) {
+    pastedDigits = pasted.filter(
+      (digit) => !isNaN(parseInt(digit))
+    );
+  }
+  /* const pastedDigits = pastedData
     .split('')
-    .filter((digit) => !isNaN(parseInt(digit)));
+    .filter((digit) => !isNaN(parseInt(digit))); */
   for (
     let i = 0;
     i < pastedDigits.length && i < codeLength.value;
     i++
   ) {
-    console.log(code.value[i], pastedDigits[i]);
     code.value[i + index] = pastedDigits[i];
   }
 };
@@ -81,6 +97,7 @@ const handlePaste = (event: ClipboardEvent, index: number) => {
 
     font-size: 1.25rem;
     text-align: center;
+    text-transform: uppercase;
     color: $inputColor;
 
     transition: 0.15s ease;
