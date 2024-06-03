@@ -1,6 +1,15 @@
 export type User = {
+  shownUsername: string;
+  avatar: string;
+  banner: string;
+  description: string;
   tag: string;
-  name: string;
-  email: string;
-  avatar?: string;
+  comments: [];
+  guilds: [];
+  friends: [];
+  gameAccounts: [];
+  games: [];
+  tasks: [];
+  createdAt: string;
+  online: 'offline' | 'online';
 };
