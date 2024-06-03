@@ -8,10 +8,13 @@
   <div
     v-else
     class="avatar icon"
-    :style="`background-color: ${avatarColor}`"
+    :style="`background-color: ${avatarColor.bg}`"
   >
-    <SVGUser v-if="avatarType === 'User'" />
-    <SVGCastle v-else />
+    <SVGUser
+      v-if="avatarType === 'User'"
+      :stroke="avatarColor.stroke"
+    />
+    <SVGCastle v-else :stroke="avatarColor.stroke" />
   </div>
 </template>
 

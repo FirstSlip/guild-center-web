@@ -11,27 +11,29 @@
         <SVGCastle stroke="#66FCF1" />
       </nuxt-link>
     </div>
-    <nuxt-link to="/profile" class="info">
-      <div class="user-avatar">
-        <WidgetsAvatar
-          :name="user.name"
-          :avatarUrl="user.avatar"
-        />
-      </div>
-      <div class="username">
-        <span>{{ user.name }}</span>
-        <br />
-        <span>{{ user.tag }}</span>
-      </div>
-    </nuxt-link>
-    <button
-      class="sign-out"
-      @mouseover="signOutHover = true"
-      @mouseleave="signOutHover = false"
-      @click="$emit('sign-out')"
-    >
-      <SVGSignOut hoverColor="red" :hover="signOutHover" />
-    </button>
+    <div class="profile">
+      <nuxt-link to="/profile" class="info">
+        <div class="user-avatar">
+          <WidgetsAvatar
+            :name="user.shownUsername"
+            :avatarUrl="user.avatar"
+          />
+        </div>
+        <div class="username">
+          <span>{{ user.shownUsername }}</span>
+          <br />
+          <span>#{{ user.tag }}</span>
+        </div>
+      </nuxt-link>
+      <button
+        class="sign-out"
+        @mouseover="signOutHover = true"
+        @mouseleave="signOutHover = false"
+        @click="$emit('sign-out')"
+      >
+        <SVGSignOut hoverColor="red" :hover="signOutHover" />
+      </button>
+    </div>
   </div>
 </template>
 
@@ -52,6 +54,10 @@ const signOutHover = ref(false);
   display: flex;
   gap: 1.625rem;
   align-items: center;
+
+  @media (max-width: 1000px) {
+    flex-direction: column-reverse;
+  }
 
   .links {
     height: 100%;
@@ -75,46 +81,52 @@ const signOutHover = ref(false);
     }
   }
 
-  .user-avatar {
-    width: 3.125rem;
-    height: 3.125rem;
-  }
+  .profile {
+    display: flex;
+    gap: 1.625rem;
+    align-items: center;
 
-  .username {
-    font-weight: 700;
-    font-size: 1.25rem;
-    color: #fff;
-
-    text-align: left;
-
-    span {
-      color: #fff;
+    .user-avatar {
+      width: 3.125rem;
+      height: 3.125rem;
     }
-  }
 
-  a.info {
-    display: flex;
-    align-items: center;
-    gap: 0.625rem;
+    .username {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #fff;
 
-    border: none;
-    background: none;
-    cursor: pointer;
+      text-align: left;
 
-    text-decoration: none;
-  }
+      span {
+        color: #fff;
+      }
+    }
 
-  button.sign-out {
-    width: 3.125rem;
-    height: 3.125rem;
+    a.info {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
 
-    border: none;
-    background: none;
-    cursor: pointer;
+      border: none;
+      background: none;
+      cursor: pointer;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+      text-decoration: none;
+    }
+
+    button.sign-out {
+      width: 3.125rem;
+      height: 3.125rem;
+
+      border: none;
+      background: none;
+      cursor: pointer;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 }
 </style>

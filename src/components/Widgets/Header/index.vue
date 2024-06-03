@@ -13,8 +13,6 @@
   </header>
 </template>
 <script setup lang="ts">
-import type { User } from '@/ts/User';
-
 const user = useProfile().user;
 
 const signOut = () => {
@@ -28,7 +26,7 @@ header.header {
   z-index: 1;
   width: 100%;
   height: $header-height;
-  padding: 1rem 1rem;
+  padding: 0.125rem 1rem;
   user-select: none;
 
   background-color: $header-background;

@@ -4,8 +4,9 @@
       v-for="(item, index) in menuItems"
       :key="index"
       :to="item.href"
-      padding="1rem"
+      padding="1.25rem"
       type="secondary"
+      font-type="h5"
     >
       {{ item.title }}
     </UILink>
@@ -39,5 +40,14 @@ const menuItems = [
 nav.menu {
   display: flex;
   gap: 1.125rem;
+
+  @media (max-width: 1000px) {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  a {
+    max-height: 100%;
+  }
 }
 </style>

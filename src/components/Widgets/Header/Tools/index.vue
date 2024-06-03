@@ -1,7 +1,8 @@
 <template>
   <div class="tools">
     <UIButton
-      transparent
+      type="blank"
+      font-type="p1"
       @click="useRouter().push('/auth/sign-in')"
     >
       Вход
@@ -15,6 +16,11 @@
 <style lang="scss" scoped>
 .tools {
   display: flex;
+  align-items: center;
   gap: 0.5rem;
+
+  @media (max-width: $adaptive-breakpoint-normal) {
+    flex-direction: column;
+  }
 }
 </style>
