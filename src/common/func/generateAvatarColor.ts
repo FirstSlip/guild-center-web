@@ -1,6 +1,6 @@
 export const generateAvatarColor = (
   username: string | undefined
-): string => {
+) => {
   const totalColors = 8;
   let hash = 0;
   let name = username || 'Error';
@@ -10,5 +10,8 @@ export const generateAvatarColor = (
 
   const index = Math.abs(hash % totalColors);
 
-  return `var(--avatar-bg-${index + 1})`;
+  return {
+    bg: `var(--avatar-bg-${index + 1})`,
+    stroke: `var(--avatar-stroke-${index + 1})`
+  };
 };
