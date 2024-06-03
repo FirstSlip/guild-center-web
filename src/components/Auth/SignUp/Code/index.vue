@@ -5,7 +5,7 @@
         Мы отправили код активации на вашу почту!
       </template>
       <template v-slot:inputs>
-        <UICodeInput fill />
+        <UICodeInput fill v-model="code" :length="6" />
       </template>
       <template v-slot:buttons>
         <UIButton fill>Продолжить</UIButton>
@@ -17,20 +17,37 @@
   </div>
 </template>
 <script setup lang="ts">
-import type { User } from '@/ts/User';
+const code = ref('');
 
-const submit = () => {
+const submit = async () => {
+  if (code.value.length !== 6) {
+    return;
+  }
+  const response = await $api.auth.signUpCode(
+    code.value.toUpperCase()
+  );
+  if ($api.utils.isSuccess(response)) {
+    await useProfile().loadProfile();
+    useRouter().push('/profile');
+  }
   /* useState<User | null>('user').value = {
     name: useRoute().query.name,
     tag: '#21822',
     email: 'ilya@mail.ru'
   }; */
-  useProfile().setUser({
+  /* useProfile().setUser({
     name: useRoute().query.name,
     tag: '#21822',
     email: 'ilya@mail.ru'
   });
-  useRouter().push('/profile');
+  useRouter().push('/profile'); */
+  /* const response = await $api.auth.signIn({
+    code:
+  }); */
+  /* if ($api.utils.isSuccess(response)) {
+    await useProfile().loadProfile();
+    useRouter().push('/profile');
+  } */
 };
 </script>
 <style lang="scss" scoped></style>

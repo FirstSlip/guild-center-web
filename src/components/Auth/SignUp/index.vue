@@ -137,15 +137,20 @@ const validate = (fieldName: keyof FieldsType) => {
   }
 };
 
-const submit = () => {
+const submit = async () => {
   for (const field in fields.value) {
     if (fields.value[field].validated === false) {
       return;
     }
   }
-  useRouter().push(
-    `/auth/sign-up/code?name=${fields.value.username.value}`
-  );
+  const response = await $api.auth.signUp({
+    username: fields.value.username.value,
+    email: fields.value.email.value,
+    password: fields.value.password.value
+  });
+  if ('success' in response && response.success) {
+    useRouter().push(`/auth/sign-up/code`);
+  }
 };
 </script>
 <style lang="scss" scoped></style>

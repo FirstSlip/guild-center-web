@@ -13,6 +13,7 @@
           type="password"
           autocomplete="current-password"
           after-text-position="error-overflow"
+          v-model="password"
         >
           <template v-slot:after-text>
             <UILink to="/auth/restore-password" font-type="p4">
@@ -35,18 +36,30 @@
 </template>
 <script setup lang="ts">
 const email = ref('');
-const submit = () => {
+const password = ref('');
+const submit = async () => {
   /* useState<User | null>('user').value = {
     name: email.value,
     tag: '#22822',
     email: email.value
   }; */
-  useProfile().setUser({
+  const response = await $api.auth.signIn({
+    username: email.value,
+    password: password.value
+  });
+  if ($api.utils.isSuccess(response)) {
+    /* const token = useCookie('token', {
+      maxAge: 60 * 60 * 24 * 30
+    });
+    token.value = response.data.token; */
+    await useProfile().loadProfile();
+    useRouter().push('/profile');
+  }
+  /* useProfile().setUser({
     name: email.value,
     tag: '#22822',
     email: email.value
-  });
-  useRouter().push('/profile');
+  }); */
 };
 </script>
 <style lang="scss" scoped></style>
