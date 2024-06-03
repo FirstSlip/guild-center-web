@@ -2,13 +2,16 @@
   <ProfileSettingsWrapper
     :currentTab="currentTab"
     :tabs="tabs"
+    :wasChanged="wasChanged"
     @switchTab="(index) => (currentTab = index)"
+    @save="save"
   >
     <transition name="settings" mode="out-in">
       <ProfileSettingsMain
         v-if="currentTab === 0"
+        :shownUsername="profile?.shownUsername || ''"
         v-model:username="username"
-        v-model:about="about"
+        v-model:description="description"
         v-model:avatarSrc="avatarSrc"
         v-model:bannerSrc="bannerSrc"
       />
@@ -26,22 +29,24 @@
 </template>
 
 <script lang="ts" setup>
+const profile = useProfile().user;
+/* const wasChanged = ref(false); */
+const wasChanged = computed(() => {
+  if (profile.value?.shownUsername !== username.value)
+    return true;
+  if (profile.value?.description !== description.value)
+    return true;
+  if (profile.value?.avatar !== avatarSrc.value) return true;
+  if (profile.value?.banner !== bannerSrc.value) return true;
+  return false;
+});
 const tabs = ['Профиль', 'Приватность', 'Личные данные'];
 const currentTab = ref(0);
 
-const username = ref('');
-const about = ref('');
-const avatarSrc = ref(null);
-const bannerSrc = ref(null);
-
-watch([username, about, avatarSrc, bannerSrc], () => {
-  console.log(
-    username.value,
-    about.value,
-    avatarSrc.value,
-    bannerSrc.value
-  );
-});
+const username = ref(profile.value?.shownUsername || '');
+const description = ref(profile.value?.description || '');
+const avatarSrc: Ref<string> = ref(profile.value?.avatar || '');
+const bannerSrc: Ref<string> = ref(profile.value?.banner || '');
 
 const all = ref(0);
 const friends = ref(0);
@@ -58,6 +63,25 @@ watch([all, friends, guilds, comments, events], () => {
     events.value
   );
 });
+
+const save = async () => {
+  const user = useProfile().user;
+  /* if (user.value) {
+    user.value.shownUsername = username.value;
+    if (avatarSrc.value) user.value.avatar = avatarSrc.value;
+    if (bannerSrc.value) user.value.banner = bannerSrc.value;
+  } */
+  const response = await $api.user.update({
+    shownUsername: username.value,
+    description: description.value,
+    avatar: avatarSrc.value,
+    banner: bannerSrc.value
+  });
+  if ('success' in response && response.success) {
+    await useProfile().loadProfile();
+    useRouter().push('/profile');
+  }
+};
 </script>
 
 <style>
