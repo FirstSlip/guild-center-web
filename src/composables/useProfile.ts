@@ -14,9 +14,16 @@ export const useProfile = () => {
     }
   };
 
+  const signOut = () => {
+    const cookie = useCookie('token');
+    cookie.value = '';
+    user.value = null;
+  };
+
   return {
     user,
     setUser,
-    loadProfile
+    loadProfile,
+    signOut
   };
 };
