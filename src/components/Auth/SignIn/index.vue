@@ -38,28 +38,15 @@
 const email = ref('');
 const password = ref('');
 const submit = async () => {
-  /* useState<User | null>('user').value = {
-    name: email.value,
-    tag: '#22822',
-    email: email.value
-  }; */
   const response = await $api.auth.signIn({
     username: email.value,
     password: password.value
   });
   if ($api.utils.isSuccess(response)) {
-    /* const token = useCookie('token', {
-      maxAge: 60 * 60 * 24 * 30
-    });
-    token.value = response.data.token; */
     await useProfile().loadProfile();
-    useRouter().push('/profile');
+    const { user } = useProfile();
+    useRouter().push(`/profile_${user.value?.tag || ''}`);
   }
-  /* useProfile().setUser({
-    name: email.value,
-    tag: '#22822',
-    email: email.value
-  }); */
 };
 </script>
 <style lang="scss" scoped></style>

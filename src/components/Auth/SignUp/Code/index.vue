@@ -1,6 +1,6 @@
 <template>
   <div class="email-code">
-    <AuthFormWrapper @submit="submit">
+    <AuthFormWrapper @submit="submit" inputs-bold>
       <template v-slot:header>
         Мы отправили код активации на вашу почту!
       </template>
@@ -28,26 +28,9 @@ const submit = async () => {
   );
   if ($api.utils.isSuccess(response)) {
     await useProfile().loadProfile();
-    useRouter().push('/profile');
+    const { user } = useProfile();
+    useRouter().push(`/profile_${user.value?.tag || ''}`);
   }
-  /* useState<User | null>('user').value = {
-    name: useRoute().query.name,
-    tag: '#21822',
-    email: 'ilya@mail.ru'
-  }; */
-  /* useProfile().setUser({
-    name: useRoute().query.name,
-    tag: '#21822',
-    email: 'ilya@mail.ru'
-  });
-  useRouter().push('/profile'); */
-  /* const response = await $api.auth.signIn({
-    code:
-  }); */
-  /* if ($api.utils.isSuccess(response)) {
-    await useProfile().loadProfile();
-    useRouter().push('/profile');
-  } */
 };
 </script>
 <style lang="scss" scoped></style>

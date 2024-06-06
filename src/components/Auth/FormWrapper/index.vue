@@ -9,7 +9,7 @@
     <h2 class="h2">
       <slot name="title"></slot>
     </h2>
-    <div class="form-body">
+    <div :class="['form-body', inputsBold && 'inputs-bold']">
       <div class="inputs">
         <slot name="inputs"></slot>
       </div>
@@ -23,6 +23,9 @@
   </form>
 </template>
 <script setup lang="ts">
+defineProps<{
+  inputsBold?: boolean;
+}>();
 const emits = defineEmits(['submit']);
 defineSlots<{
   ['header']: [];
@@ -46,7 +49,7 @@ form.auth {
   border: 1px solid $stroke-white;
   border-radius: 3.12rem;
 
-  background: $background-dark-purple;
+  background: $background-light-purple;
 
   margin: 5% auto;
 
@@ -55,15 +58,26 @@ form.auth {
     width: 22rem;
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 1.25rem;
 
+    &.inputs-bold {
+      width: 26.875rem;
+
+      .buttons {
+        width: 22rem;
+      }
+    }
+
     .inputs {
+      width: 100%;
       display: flex;
       flex-direction: column;
       gap: 1.25rem;
     }
 
     .buttons {
+      width: 100%;
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
