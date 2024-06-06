@@ -1,26 +1,26 @@
 <template>
   <div class="user">
     <div class="links">
-      <nuxt-link to="/profile/friends">
+      <nuxt-link :to="`/profile_${user.tag}/friends`">
         <SVGFriends />
       </nuxt-link>
       <nuxt-link to="/chat">
         <SVGChat />
       </nuxt-link>
-      <nuxt-link to="/profile/guilds">
+      <nuxt-link :to="`/profile_${user.tag}/guilds`">
         <SVGCastle stroke="#66FCF1" />
       </nuxt-link>
     </div>
     <div class="profile">
-      <nuxt-link to="/profile" class="info">
+      <nuxt-link :to="`/profile_${user.tag}`" class="info">
         <div class="user-avatar">
           <WidgetsAvatar
-            :name="user.shownUsername"
+            :name="user.username"
             :avatarUrl="user.avatar"
           />
         </div>
         <div class="username">
-          <span>{{ user.shownUsername }}</span>
+          <span>{{ user.username }}</span>
           <br />
           <span>#{{ user.tag }}</span>
         </div>
