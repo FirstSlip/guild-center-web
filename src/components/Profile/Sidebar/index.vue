@@ -1,30 +1,26 @@
 <template>
   <section class="sidebar">
-    <ProfileSidebarFriends :friends="friends" />
+    <ProfileSidebarFriends
+      :friends="friends"
+      :is-my-profile="isMyProfile"
+    />
     <div class="separator"></div>
-    <ProfileSidebarGuilds :guilds="guilds" />
+    <ProfileSidebarGuilds
+      :guilds="guilds"
+      :is-my-profile="isMyProfile"
+    />
   </section>
 </template>
 
 <script lang="ts" setup>
-const friends: { name: string; avatarUrl?: string }[] = [
-  { name: 'Степан' },
-  { name: 'Павел' },
-  {
-    name: 'Алексей',
-    avatarUrl:
-      'https://eso-hub.com/storage/uploads/user-avatars/PqUQC5gqHKXHX3jOIPhq1PAM8d7QIDwoEdT5j1KI.png'
-  }
-];
-const guilds = [
-  { name: 'WOW Gaming' },
-  { name: 'POE Community' }
-];
-/* const x = await $api.auth.signIn({
-  username: 'ilya@mail.ru',
-  password: '123'
-});
-console.log('x', x.pending.value, x.data.value, x.error.value); */
+import type { ShortGuild } from '@/ts/ShortGuild';
+import type { ShortUser } from '@/ts/shortUser';
+
+defineProps<{
+  friends: ShortUser[];
+  guilds: ShortGuild[];
+  isMyProfile?: boolean;
+}>();
 </script>
 
 <style lang="scss" scoped>
