@@ -1,35 +1,234 @@
 <template>
   <section class="comments">
-    <UIInput placeholder="Оставьте комментарий">
-      <template v-slot:before-icon>
-        <svg
-          width="25"
-          height="25"
-          viewBox="0 0 25 25"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M6.425 19.6344C6.68282 18.7763 7.21038 18.0241 7.92942 17.4896C8.64846 16.955 9.52067 16.6664 10.4167 16.6667H14.5833C15.4805 16.6664 16.3538 16.9556 17.0733 17.4914C17.7929 18.0273 18.3203 18.781 18.5771 19.6406M3.125 12.5C3.125 13.7311 3.36749 14.9502 3.83863 16.0877C4.30977 17.2251 5.00032 18.2586 5.87087 19.1291C6.74142 19.9997 7.77492 20.6902 8.91234 21.1614C10.0498 21.6325 11.2689 21.875 12.5 21.875C13.7311 21.875 14.9502 21.6325 16.0877 21.1614C17.2251 20.6902 18.2586 19.9997 19.1291 19.1291C19.9997 18.2586 20.6902 17.2251 21.1614 16.0877C21.6325 14.9502 21.875 13.7311 21.875 12.5C21.875 11.2689 21.6325 10.0498 21.1614 8.91234C20.6902 7.77492 19.9997 6.74142 19.1291 5.87087C18.2586 5.00032 17.2251 4.30977 16.0877 3.83863C14.9502 3.36749 13.7311 3.125 12.5 3.125C11.2689 3.125 10.0498 3.36749 8.91234 3.83863C7.77492 4.30977 6.74142 5.00032 5.87087 5.87087C5.00032 6.74142 4.30977 7.77492 3.83863 8.91234C3.36749 10.0498 3.125 11.2689 3.125 12.5ZM9.375 10.4167C9.375 11.2455 9.70424 12.0403 10.2903 12.6264C10.8763 13.2124 11.6712 13.5417 12.5 13.5417C13.3288 13.5417 14.1237 13.2124 14.7097 12.6264C15.2958 12.0403 15.625 11.2455 15.625 10.4167C15.625 9.58786 15.2958 8.79301 14.7097 8.20696C14.1237 7.62091 13.3288 7.29167 12.5 7.29167C11.6712 7.29167 10.8763 7.62091 10.2903 8.20696C9.70424 8.79301 9.375 9.58786 9.375 10.4167Z"
-            stroke="white"
-            stroke-width="1.53846"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+    <label class="add-comment" @keydown="keyDown">
+      <div class="user-avatar">
+        <WidgetsAvatar
+          type="User"
+          :name="user?.username || 'Загрузка...'"
+          :avatar-url="user?.avatar"
+        />
+      </div>
+      <div class="line"></div>
+      <input
+        v-model="comment"
+        class="input"
+        type="text"
+        placeholder="Оставьте комментарий"
+      />
+      <button class="send" @click="sendMessage">
+        <SVGSend />
+      </button>
+    </label>
+    <div
+      v-for="comment in comments"
+      :key="comment.commentId"
+      class="comment"
+    >
+      <div class="info">
+        <div class="user-avatar">
+          <WidgetsAvatar
+            type="User"
+            :name="comment.sender.username"
+            :avatar-url="comment.sender.avatar"
           />
-        </svg>
-      </template>
-    </UIInput>
+        </div>
+        <div class="user-name">
+          {{ comment.sender.username }}
+        </div>
+        <div class="date">
+          {{ formatDate(comment.createdAt, true) }}
+        </div>
+        <button
+          v-if="
+            comment.sender.tag === myProfile?.tag || isMyProfile
+          "
+          class="delete"
+          @click="deleteComment(comment.commentId)"
+        >
+          <SVGTrash />
+        </button>
+      </div>
+      <div class="text">{{ comment.text }}</div>
+    </div>
   </section>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { formatDate } from '@/common/func/formatDate';
+import type { User } from '@/ts/User';
+import type { UserMe } from '@/ts/UserMe';
+
+const props = defineProps<{
+  user: User | null;
+  id: string;
+  isMyProfile: boolean;
+  myProfile: UserMe | null;
+}>();
+const emit = defineEmits<{
+  (e: 'comment-sent'): void;
+}>();
+
+const comment = ref('');
+
+const comments = computed(() => props.user?.comments || []);
+
+const sendMessage = async () => {
+  if (!comment.value || comment.value.length <= 0) {
+    return;
+  }
+  const response = await $api.user.comment.add(
+    props.id,
+    comment.value
+  );
+  if ('success' in response && response.success) {
+    comment.value = '';
+    emit('comment-sent');
+    /* useProfile().loadProfile(); */
+  }
+};
+const keyDown = (event: KeyboardEvent) => {
+  if (event.key === 'Enter') {
+    sendMessage();
+  }
+};
+
+const deleteComment = async (commentId: string) => {
+  const response =
+    await $api.user.comment.deleteComment(commentId);
+  console.log('res', response);
+  if ('success' in response && response.success) {
+    useProfile().loadProfile();
+  }
+};
+</script>
 
 <style lang="scss" scoped>
 section.comments {
   width: 100%;
   height: min-content;
-  background-color: $background-light-purple;
+  /* background-color: $background-light-purple; */
 
   border-radius: 0.75rem;
+
+  label.add-comment {
+    height: 2.5rem;
+    margin-bottom: 1.5rem;
+    padding: 0.5rem 1rem;
+
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    background-color: $light-purple;
+    border-radius: 0.25rem;
+
+    .user-avatar {
+      width: 1.5rem;
+      height: 1.5rem;
+      min-width: 1.5rem;
+      min-height: 1.5rem;
+    }
+
+    .line {
+      height: 100%;
+      width: 2px;
+      background-color: $white;
+    }
+
+    input.input {
+      width: 100%;
+      height: 100%;
+      background: none;
+      border: none;
+      outline: none;
+
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 155%;
+    }
+
+    button.send {
+      width: 1.5rem;
+      height: 1.5rem;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+  }
+
+  .comment {
+    width: 100%;
+    margin-bottom: 0.5rem;
+
+    background: $light-purple;
+    border-radius: 0.25rem;
+
+    overflow: hidden;
+
+    .info {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 0.5rem 1rem;
+
+      &:has(:not(button.delete)) {
+        justify-content: flex-start;
+      }
+
+      .user-avatar {
+        width: 1.25rem;
+        height: 1.25rem;
+      }
+
+      .user-name {
+        height: 100%;
+        margin-right: 0.25rem;
+
+        font-weight: 400;
+        font-size: 1rem;
+        line-height: 155%;
+        color: var(--text-white);
+      }
+
+      .date {
+        height: 100%;
+        font-weight: 400;
+        font-size: 1rem;
+        line-height: 155%;
+        color: rgba(255, 255, 255, 0.75);
+      }
+
+      button.delete {
+        height: 1.25rem;
+        width: 1.25rem;
+        margin-left: auto;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        cursor: pointer;
+      }
+    }
+
+    .text {
+      padding: 1rem;
+      width: 100%;
+
+      background: $gray;
+
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 155%;
+    }
+  }
 }
 </style>
