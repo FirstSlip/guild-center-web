@@ -1,10 +1,12 @@
+import type { Comment } from './Comment';
+
 export type User = {
-  shownUsername: string;
+  username: string;
   avatar: string;
   banner: string;
   description: string;
   tag: string;
-  comments: [];
+  comments: Comment[];
   guilds: [];
   friends: [];
   gameAccounts: [];
