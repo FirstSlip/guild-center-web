@@ -9,7 +9,7 @@
     <transition name="settings" mode="out-in">
       <ProfileSettingsMain
         v-if="currentTab === 0"
-        :shownUsername="profile?.shownUsername || ''"
+        :current-username="profile?.username || ''"
         v-model:username="username"
         v-model:description="description"
         v-model:avatarSrc="avatarSrc"
@@ -32,8 +32,7 @@
 const profile = useProfile().user;
 /* const wasChanged = ref(false); */
 const wasChanged = computed(() => {
-  if (profile.value?.shownUsername !== username.value)
-    return true;
+  if (profile.value?.username !== username.value) return true;
   if (profile.value?.description !== description.value)
     return true;
   if (profile.value?.avatar !== avatarSrc.value) return true;
@@ -43,7 +42,7 @@ const wasChanged = computed(() => {
 const tabs = ['Профиль', 'Приватность', 'Личные данные'];
 const currentTab = ref(0);
 
-const username = ref(profile.value?.shownUsername || '');
+const username = ref(profile.value?.username || '');
 const description = ref(profile.value?.description || '');
 const avatarSrc: Ref<string> = ref(profile.value?.avatar || '');
 const bannerSrc: Ref<string> = ref(profile.value?.banner || '');
@@ -66,20 +65,15 @@ watch([all, friends, guilds, comments, events], () => {
 
 const save = async () => {
   const user = useProfile().user;
-  /* if (user.value) {
-    user.value.shownUsername = username.value;
-    if (avatarSrc.value) user.value.avatar = avatarSrc.value;
-    if (bannerSrc.value) user.value.banner = bannerSrc.value;
-  } */
   const response = await $api.user.update({
-    shownUsername: username.value,
+    username: username.value,
     description: description.value,
     avatar: avatarSrc.value,
     banner: bannerSrc.value
   });
   if ('success' in response && response.success) {
     await useProfile().loadProfile();
-    useRouter().push('/profile');
+    useRouter().push(`/profile_${user.value?.tag || ''}`);
   }
 };
 </script>
