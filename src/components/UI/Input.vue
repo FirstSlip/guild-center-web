@@ -204,7 +204,8 @@ function toggleEye() {
         }
 
         &:-webkit-autofill {
-          -webkit-box-shadow: 0 0 0 30px #08001a inset !important;
+          -webkit-box-shadow: 0 0 0 30px $background-light-purple
+            inset !important;
           -webkit-text-fill-color: $text-white !important;
         }
       }

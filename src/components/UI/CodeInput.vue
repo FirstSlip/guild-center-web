@@ -93,7 +93,7 @@ const handlePaste = (event: ClipboardEvent, index: number) => {
     border: 1px solid;
     border-color: $inputStroke;
 
-    background-color: black;
+    background-color: transparent;
 
     font-size: 1.25rem;
     text-align: center;
