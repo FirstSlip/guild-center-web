@@ -13,12 +13,14 @@
         <div class="guild-avatar">
           <WidgetsAvatar
             :avatar-url="currentGuild?.avatarUrl"
-            :name="currentGuild?.name || 'Error'"
+            :name="currentGuild?.name || 'Загрузка...'"
           />
         </div>
         <div class="info">
           <h1 class="h4">
-            <span>{{ currentGuild?.name || 'Error' }}</span>
+            <span>
+              {{ currentGuild?.name || 'Загрузка...' }}
+            </span>
           </h1>
           <span class="h5">статус Гильдии</span>
         </div>
@@ -51,8 +53,9 @@ const currentGuildId = computed(
 );
 
 const bannerColor = computed(() => {
-  return generateAvatarColor(currentGuild.value?.name || 'Error')
-    .bg;
+  return generateAvatarColor(
+    currentGuild.value?.name || 'Загрузка...'
+  ).bg;
 });
 
 const currentGuild = computed(() => {
@@ -113,7 +116,9 @@ section.guild-header {
       #98537e 50%,
       #ff0050 98%
     );
+    object-fit: fill;
     background-size: cover;
+    background-position: center;
   }
 
   .main {
