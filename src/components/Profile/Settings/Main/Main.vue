@@ -4,7 +4,7 @@
       <h2 class="h4">Никнейм</h2>
       <UIInputSecondary
         fill
-        :placeholder="shownUsername"
+        :placeholder="currentUsername"
         v-model="username"
       />
       <p class="p2">
@@ -19,14 +19,10 @@
           <div class="image">
             <WidgetsAvatar
               v-if="!avatarSrc"
-              :avatar-url="user?.avatar"
-              :name="user?.shownUsername || 'Error'"
+              :avatar-url="avatarSrc"
+              :name="username || 'Загрузка...'"
             />
-            <img
-              v-else
-              :src="avatarSrc"
-              :alt="user?.shownUsername"
-            />
+            <img v-else :src="avatarSrc" :alt="user?.username" />
           </div>
         </div>
         <p class="p2">
@@ -80,11 +76,7 @@
           v-if="!bannerSrc"
           :style="`background-color: ${bannerDefaultColor}`"
         ></div>
-        <img
-          v-else
-          :src="bannerSrc"
-          :alt="user?.shownUsername"
-        />
+        <img v-else :src="bannerSrc" :alt="username" />
       </div>
       <p class="p2">
         <span>Рекомендуемое разрешение</span>
@@ -120,10 +112,10 @@
 
 <script lang="ts" setup>
 import { generateAvatarColor } from '@/common/func/generateAvatarColor';
-import { toBase64 } from '@/common/func/toBase64';
+import { resizeImage } from '@/common/func/resizeImage';
 
 defineProps<{
-  shownUsername: string;
+  currentUsername: string;
 }>();
 const emit = defineEmits<{
   (e: 'changeUsername', username: string): void;
@@ -185,10 +177,16 @@ const bannerSrc = defineModel<string>('bannerSrc', {
 const changeAvatar = async (e: Event) => {
   const [file] = (<HTMLInputElement>e.target).files || [];
   if (file) {
-    const base64 = await toBase64(file);
+    /* const base64 = await toBase64(file);
     if (typeof base64 === 'string') {
       avatarSrc.value = base64;
       emit('changeAvatar', base64);
+    } */
+    try {
+      const resizedImage = await resizeImage(file, 128, 128);
+      avatarSrc.value = resizedImage;
+    } catch (error) {
+      console.error('Error resizing image:', error);
     }
   }
 };
@@ -196,17 +194,21 @@ const changeAvatar = async (e: Event) => {
 const changeBanner = async (e: Event) => {
   const [file] = (<HTMLInputElement>e.target).files || [];
   if (file) {
-    const base64 = await toBase64(file);
+    /* const base64 = await toBase64(file);
     if (typeof base64 === 'string') {
       bannerSrc.value = base64;
+    } */
+    try {
+      const resizedImage = await resizeImage(file, 850, 170);
+      bannerSrc.value = resizedImage;
+    } catch (error) {
+      console.error('Error resizing image:', error);
     }
   }
 };
 
 const bannerDefaultColor = computed(() => {
-  return generateAvatarColor(
-    user.value?.shownUsername || 'Error'
-  ).bg;
+  return generateAvatarColor(username.value || 'Загрузка...').bg;
 });
 </script>
 
@@ -266,7 +268,7 @@ const bannerDefaultColor = computed(() => {
           img {
             width: 100%;
             height: 100%;
-            background-size: cover;
+            background-size: fill;
           }
         }
       }
