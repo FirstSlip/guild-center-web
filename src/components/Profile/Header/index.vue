@@ -3,8 +3,8 @@
     <div
       class="banner"
       :style="
-        user?.banner
-          ? `background-image: url(${user.banner})`
+        profile?.banner
+          ? `background-image: url(${profile.banner})`
           : `background: ${bannerColor}`
       "
     ></div>
@@ -12,22 +12,27 @@
       <div class="user-info">
         <div class="user-avatar">
           <WidgetsAvatar
-            :avatar-url="user?.avatar"
-            :name="user?.shownUsername || 'Error'"
+            :avatar-url="profile?.avatar"
+            :name="profile?.username || 'Загрузка...'"
           />
         </div>
         <div class="info">
           <h1 class="h4">
-            <span>{{ user?.shownUsername || 'Error' }}</span>
-            <span>#{{ user?.tag || 'Error' }}</span>
+            <span>
+              {{ profile?.username || 'Загрузка...' }}
+            </span>
+            <span>#{{ id || 'Загрузка...' }}</span>
           </h1>
-          <span class="h5">{{ user?.description || '' }}</span>
+          <span class="h5">
+            {{ profile?.description || '' }}
+          </span>
         </div>
         <UIButton
+          v-if="isMyProfile"
           font-type="h5"
           padding="0 1.25rem"
           border-radius="0.25rem"
-          @click="$router.push('/profile/settings')"
+          @click="$router.push(`/profile_${id}/settings`)"
         >
           Редактировать профиль
         </UIButton>
@@ -45,31 +50,45 @@
 
 <script lang="ts" setup>
 import { generateAvatarColor } from '@/common/func/generateAvatarColor';
+import type { User } from '@/ts/User';
+const props = defineProps<{
+  currentTab: 'accounts' | 'integrations' | 'calendar' | '';
+  profile: User | null;
+  id: string;
+  isMyProfile: boolean;
+}>();
 
-const user = useProfile().user;
-console.log('user', user.value);
-/* const props = defineProps<{
-  currentTab: string;
-}>(); */
 const bannerColor = computed(() => {
   return generateAvatarColor(
-    user.value?.shownUsername || 'Error'
+    props.profile?.username || 'Загрузка...'
   ).bg;
 });
-const currentTab = computed(() => useRoute().path);
+/* const currentTab = computed(() => useRoute().path); */
 const tabs = [
-  { title: 'комментарии', href: '/profile' },
-  { title: 'игровые аккаунты', href: '/profile/accounts' },
-  { title: 'интеграции', href: '/profile/integrations' },
-  { title: 'календарь', href: '/profile/calendar' }
+  {
+    title: 'комментарии',
+    href: `/profile_${props.id}`,
+    tab: ''
+  },
+  {
+    title: 'игровые аккаунты',
+    href: `/profile_${props.id}?tab=accounts`,
+    tab: 'accounts'
+  },
+  {
+    title: 'интеграции',
+    href: `/profile_${props.id}?tab=integrations`,
+    tab: 'integrations'
+  },
+  {
+    title: 'календарь',
+    href: `/profile_${props.id}?tab=calendar`,
+    tab: 'calendar'
+  }
 ];
 
 const currentTabIndex = computed(() => {
-  return tabs.findIndex(
-    (tab) =>
-      tab.href === currentTab.value ||
-      tab.href === currentTab.value.slice(0, -1)
-  );
+  return tabs.findIndex((tab) => props.currentTab === tab.tab);
 });
 
 const switchTab = (index: number) => {
@@ -93,6 +112,8 @@ section.profile-header {
       #98537e 50%,
       #ff0050 98%
     );
+    background-size: 100% 100%;
+    background-position: center;
   }
 
   .main {
