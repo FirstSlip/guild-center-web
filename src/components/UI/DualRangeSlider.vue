@@ -38,6 +38,7 @@
         type="range"
         :min="from"
         :max="to"
+        :style="trackBg && { background: trackBg }"
         v-model="toValue"
       />
     </div>
@@ -51,7 +52,19 @@ const props = defineProps<{
   to: number;
 }>();
 const model = defineModel<{ to: number; from: number }>({
-  default: { to: 0, from: 100 }
+  default: { to: 100, from: 0 }
+});
+
+const trackBg = computed(() => {
+  const firstLine = Math.round(
+    ((model.value.from - props.from) / (props.to - props.from)) *
+      100
+  );
+  const secondLine = Math.round(
+    ((model.value.to - props.from) / (props.to - props.from)) *
+      100
+  );
+  return `linear-gradient(90deg, #7d7d7d ${firstLine}%, #66fcf1 ${firstLine}%, #66fcf1 ${secondLine}%, #7d7d7d ${secondLine}%)`;
 });
 
 const fromValue = ref(props.from);
