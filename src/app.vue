@@ -6,7 +6,6 @@
 
 <script setup lang="ts">
 await useProfile().loadProfile();
-console.log(useProfile().user.value);
 </script>
 
 <style lang="scss">
