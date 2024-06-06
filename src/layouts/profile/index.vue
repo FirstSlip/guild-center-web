@@ -6,7 +6,6 @@
     </div> -->
     <div class="content">
       <div class="cw">
-        <ProfileHeader />
         <NuxtPage />
       </div>
     </div>
