@@ -3,7 +3,7 @@ export const generateAvatarColor = (
 ) => {
   const totalColors = 8;
   let hash = 0;
-  let name = username || 'Error';
+  let name = username || 'Загрузка...';
   for (let i = 0; i < name.length; i++) {
     hash = name.charCodeAt(i) + ((hash << 5) - hash);
   }
