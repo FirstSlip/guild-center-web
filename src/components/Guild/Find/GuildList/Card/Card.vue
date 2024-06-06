@@ -1,8 +1,5 @@
 <template>
-  <button
-    class="guild-card"
-    @click="$router.push(`/guild/${id}`)"
-  >
+  <nuxt-link class="guild-card" :to="`/guild/${id}`">
     <div class="header">
       <img
         v-if="bannerUrl"
@@ -26,7 +23,7 @@
         <img
           v-for="game in games"
           :src="`/img/games/${game.replaceAll(' ', '_')}.png`"
-          alt=""
+          :alt="game"
         />
       </div>
     </div>
@@ -40,7 +37,7 @@
         </span>
       </div>
     </div>
-  </button>
+  </nuxt-link>
 </template>
 
 <script lang="ts" setup>
@@ -99,7 +96,8 @@ button.guild-card {
       left: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: fill;
+      object-position: center;
     }
 
     .games {
@@ -128,6 +126,7 @@ button.guild-card {
     .types {
       display: flex;
       gap: 0.25rem;
+      margin-top: auto;
 
       .type {
         padding: 0.125rem 0.5rem;
