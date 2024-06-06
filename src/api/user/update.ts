@@ -1,7 +1,7 @@
 import { request } from '@/common/func/request';
 
 export const update = async (user: {
-  shownUsername?: string;
+  username?: string;
   description?: string;
   avatar?: string;
   banner?: string;
