@@ -37,7 +37,7 @@ const profile = useProfile().user;
 const { data: user, refresh } = useAsyncData(
   `user_${id.value}`,
   async () => {
-    const response = await $api.user.find(id.value);
+    const response = await $api.user.getByTag(id.value);
     if ($api.utils.isSuccess(response)) {
       return response.data.user;
     }
