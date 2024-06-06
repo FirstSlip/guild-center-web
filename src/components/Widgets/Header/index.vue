@@ -16,7 +16,7 @@
 const user = useProfile().user;
 
 const signOut = () => {
-  user.value = null;
+  useProfile().signOut();
   useRouter().push('/');
 };
 </script>
