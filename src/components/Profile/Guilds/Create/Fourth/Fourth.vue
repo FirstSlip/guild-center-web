@@ -2,9 +2,9 @@
   <div class="fourth-step">
     <div class="title">
       <h1 class="h4">
-        Какой игре или играм будет посвящена ваша гильдия?
+        Укажите параметры приватности вашей гильдии.
       </h1>
-      <UISelectPrivacy />
+      <UISelectPrivacy v-model="privacy" />
     </div>
     <div class="years">
       <h2 class="h4">Возрастной диапазон</h2>
@@ -27,8 +27,10 @@ defineEmits<{
   (e: 'prev'): void;
 }>();
 
-const slider = defineModel<{ to: number; from: number }>({
-  default: { to: 12, from: 90 }
+const privacy = defineModel<0 | 1>('privacy', { default: 0 });
+
+const slider = defineModel<{ to: number; from: number }>('age', {
+  default: { from: 12, to: 90 }
 });
 </script>
 
