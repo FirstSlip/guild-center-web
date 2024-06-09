@@ -3,10 +3,11 @@ import type { User } from '@/ts/User';
 
 export const findByUsername = async (
   username: string,
-  tag: string
+  tag: string,
+  page: number
 ) => {
   const response = await request<{ users: User[] }>(
-    `user/find?username=${username}&tag=${tag}`,
+    `user/find?username=${username}&tag=${tag}&page=${page}`,
     {
       ignoreResponseError: true
     }
