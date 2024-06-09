@@ -51,8 +51,8 @@ const props = defineProps<{
   from: number;
   to: number;
 }>();
-const model = defineModel<{ to: number; from: number }>({
-  default: { to: 100, from: 0 }
+const model = defineModel<{ from: number; to: number }>({
+  default: { from: 0, to: 100 }
 });
 
 const trackBg = computed(() => {
