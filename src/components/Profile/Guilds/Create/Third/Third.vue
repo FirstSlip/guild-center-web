@@ -2,7 +2,7 @@
   <div class="fourth-step">
     <div class="title">
       <h1 class="h4">
-        Какой игре или играм будет посвящена ваша гильдия?
+        На чем будет фокусироваться ваша гильдия?
       </h1>
     </div>
     <div
@@ -25,96 +25,31 @@
       </div>
     </div>
     <div class="buttons">
-      <UIButton type="primary" fill @click="$emit('next')">
+      <UIButton type="primary" fill @click="next">
         Продолжить
       </UIButton>
       <UIButton type="blank" fill @click="$emit('prev')">
         Назад
       </UIButton>
+      <p v-if="isError" class="error">
+        Вы должны выбрать хотя бы один тип
+      </p>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-defineEmits<{
+import { gameTypesArray } from '@/common/data/gameTypesArray';
+
+const emit = defineEmits<{
   (e: 'next'): void;
   (e: 'prev'): void;
 }>();
 
-const gameTypes = ref([
-  {
-    name: 'PvE',
-    shortName: 'PVE',
-    descriptionTitle: 'PvE (Игрок против Окружения)',
-    description:
-      'Гильдии, ориентированные на совместное прохождение подземелий, рейдов и сражениях с боссами. Основной фокус на командной работе, координации действий и достижении общих целей.',
-    selected: false
-  },
-  {
-    name: 'PvP',
-    shortName: 'PVP',
-    descriptionTitle: 'PvP (Игрок против Игрока)',
-    description:
-      'Специализация на различных видах PvP-активности, таких как арены, поля боя, войны гильдий и open-world PvP. Основной фокус на соревновательном аспекте игры, развитии навыков и достижении побед.',
-    selected: false
-  },
-  {
-    name: 'RP',
-    shortName: 'RP',
-    descriptionTitle: 'RP (Ролевая игра)',
-    description:
-      'Гильдии, ориентированные на ролевую игру. Участники вживаются в роли своих персонажей, следуют определенным правилам и взаимодействуют друг с другом, создавая уникальную атмосферу.',
-    selected: false
-  },
-  {
-    name: 'Торговля',
-    shortName: 'Trade',
-    descriptionTitle: 'Торговые',
-    description:
-      'Фокусируется на торговле, экономике и развитии внутриигрового бизнеса. Участники занимаются покупкой, продажей и обменом внутриигровых предметов.',
-    selected: false
-  },
-  {
-    name: 'Крафт',
-    shortName: 'Craft',
-    descriptionTitle: 'Крафт и собирательство',
-    description:
-      'Гильдии, специализирующиеся на сборе ресурсов и создании предметов. Участники занимаются добычей материалов, изучением рецептов и производством различных предметов, которые могут быть использованы ими самими или проданы другим игрокам.',
-    selected: false
-  },
-  {
-    name: 'Обучение',
-    shortName: 'Education',
-    descriptionTitle: 'Обучение и помощь новичкам',
-    description:
-      'Гильдии, предоставляющие помощь и поддержку новым игрокам. Участники делятся своим опытом, помогают освоиться в игре, отвечают на вопросы и проводят обучающие мероприятия.',
-    selected: false
-  },
-  {
-    name: 'Исследование',
-    shortName: 'Explore',
-    descriptionTitle: 'Исследование и приключения',
-    description:
-      'Объединение игроков, увлеченных исследованием игрового мира и поиском секретов и осуждения теорий. Участники открывают новые локации, разгадывают загадки, собирают коллекционные предметы и делятся своими открытиями с другими',
-    selected: false
-  },
-  {
-    name: 'Творчество',
-    shortName: 'Creative',
-    descriptionTitle: 'Творческие',
-    description:
-      'Фокусируется на создании контента, например: видео, скриншотов, фанфиков и рисунков. Участники делятся своими работами с сообществом, организуют конкурсы и вдохновляют друг друга на творчество',
-    selected: false
-  },
-  {
-    name: 'Киберспорт',
-    shortName: 'Cybersport',
-    descriptionTitle: 'Киберспортивные',
-    description:
-      'Гильдии, стремящиеся к участию в киберспортивных соревнованиях и турнирах. Основной фокус на тренировках, развитии командной игры и достижении высоких результатов.',
-    selected: false
-  }
-]);
+const isError = ref(false);
+const gameTypes = ref(
+  gameTypesArray.map((game) => ({ ...game, selected: false }))
+);
 
 const model = defineModel<string[]>();
 watch(
@@ -123,35 +58,88 @@ watch(
     model.value = gameTypes.value
       .filter((game) => game.selected)
       .map((game) => game.name);
+    isError.value = false;
   },
   { deep: true }
 );
 
+(model.value || []).forEach((type) => {
+  const selected = gameTypes.value.find((g) => g.name === type);
+  if (selected) {
+    selected.selected = true;
+  }
+});
+
 let isDragging = false;
 let startX: number;
 let scrollLeft: number;
+let velocity = 0;
+let lastX: number;
+let animationFrameId: number | null = null;
+let lastTimestamp: number | null = null;
 
 function startDragging(event: MouseEvent) {
   isDragging = true;
   startX =
-    event.pageX - (<HTMLElement>event.currentTarget).offsetLeft;
-  scrollLeft = (<HTMLElement>event.currentTarget).scrollLeft;
+    event.pageX -
+    (event.currentTarget as HTMLElement).offsetLeft;
+  scrollLeft = (event.currentTarget as HTMLElement).scrollLeft;
+  velocity = 0; // обнуляем скорость при начале перетаскивания
+  lastX = startX;
+  lastTimestamp = event.timeStamp;
+  if (animationFrameId) {
+    cancelAnimationFrame(animationFrameId);
+  }
 }
 
-function stopDragging() {
+function stopDragging(event: MouseEvent) {
   isDragging = false;
+  const target = event.currentTarget as HTMLElement;
+  if (Math.abs(velocity) > 0.5) {
+    // применяем инерцию только если скорость больше порога
+    applyInertia(target);
+  }
 }
 
 function drag(event: MouseEvent) {
-  console.log(isDragging);
   if (!isDragging) return;
   event.preventDefault();
   const x =
-    event.pageX - (<HTMLElement>event.currentTarget).offsetLeft;
-  const walk = (x - startX) * 2;
-  (<HTMLElement>event.currentTarget).scrollLeft =
-    scrollLeft - walk;
+    event.pageX -
+    (event.currentTarget as HTMLElement).offsetLeft;
+  const walk = (x - startX) * 0.5; // уменьшили чувствительность
+  const target = event.currentTarget as HTMLElement;
+  target.scrollLeft = scrollLeft - walk;
+
+  const deltaX = x - lastX;
+  const deltaTime =
+    event.timeStamp - (lastTimestamp ?? event.timeStamp);
+  velocity = -(deltaX / deltaTime) * 20; // вычисляем скорость
+  lastX = x;
+  lastTimestamp = event.timeStamp;
 }
+
+function applyInertia(target: HTMLElement) {
+  const friction = 0.95; // уменьшили трение для плавности замедления
+  function step() {
+    if (Math.abs(velocity) > 0.5) {
+      target.scrollLeft += velocity;
+      velocity *= friction;
+      animationFrameId = requestAnimationFrame(step);
+    } else {
+      animationFrameId = null;
+    }
+  }
+  step();
+}
+
+const next = () => {
+  if (model.value?.length === 0) {
+    isError.value = true;
+    return;
+  }
+  emit('next');
+};
 </script>
 
 <style lang="scss" scoped>
@@ -177,6 +165,8 @@ function drag(event: MouseEvent) {
   .cards-container {
     overflow-x: auto;
 
+    cursor: grab;
+
     &::-webkit-scrollbar {
       display: none;
     }
@@ -188,6 +178,27 @@ function drag(event: MouseEvent) {
       > * {
         flex-shrink: 0;
       }
+    }
+  }
+
+  .buttons {
+    position: relative;
+    margin: auto auto 0;
+    width: 22rem;
+
+    flex-shrink: 1;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    p.error {
+      position: absolute;
+      top: 100%;
+      width: 100%;
+      margin-top: 0.25rem;
+      color: $red;
+      text-align: center;
     }
   }
 }
