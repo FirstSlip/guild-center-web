@@ -1,4 +1,5 @@
-import type { Comment } from './Comment';
+import type { Comment } from '@/ts/Comment';
+import type { Guild } from '@/ts/Guild';
 
 export type User = {
   username: string;
@@ -7,7 +8,7 @@ export type User = {
   description: string;
   tag: string;
   comments: Comment[];
-  guilds: [];
+  guilds: Guild[];
   friends: [];
   gameAccounts: [];
   games: [];

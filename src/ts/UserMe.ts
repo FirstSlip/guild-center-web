@@ -1,10 +1,11 @@
-import type { User } from './User';
+import type { FriendRequest } from '@/ts/FriendRequest';
+import type { User } from '@/ts/User';
 
 export type UserMe = User & {
   username: string;
   email: string;
   chats: [];
-  friendRequests: [];
+  friendRequests: FriendRequest[];
   guildRequests: [];
   blockedUsers: [];
   privacy: {

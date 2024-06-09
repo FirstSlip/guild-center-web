@@ -1,11 +1,12 @@
+import type { Game } from '@/ts/Game';
+
 export type Guild = {
-  id: number;
+  guildId: string;
   name: string;
-  avatarUrl?: string;
-  bannerUrl?: string;
-  games: string[];
-  types: string[];
-  genres?: string[];
-  membersCount: number;
-  description?: string;
+  avatar: string;
+  banner: string;
+  membersLength: number;
+  games: Game[];
+  trends: string[];
+  description: string;
 };

@@ -1,5 +1,5 @@
 export type ShortGuild = {
-  id: number;
+  guildId: string;
   name: string;
   avatar: string;
 };
