@@ -41,9 +41,8 @@ nav.menu {
   display: flex;
   gap: 1.125rem;
 
-  @media (max-width: 1000px) {
-    flex-direction: column;
-    align-items: center;
+  @media (max-width: $adaptive-breakpoint-normal) {
+    gap: 0.25rem;
   }
 
   a {

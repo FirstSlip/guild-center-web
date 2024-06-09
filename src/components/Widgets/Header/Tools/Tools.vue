@@ -20,7 +20,7 @@
   gap: 0.5rem;
 
   @media (max-width: $adaptive-breakpoint-normal) {
-    flex-direction: column;
+    gap: 0.25rem;
   }
 }
 </style>

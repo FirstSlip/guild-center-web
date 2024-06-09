@@ -4,8 +4,8 @@
       <WidgetsHeaderLogo />
       <WidgetsHeaderMenu />
       <WidgetsHeaderUser
-        v-if="user"
-        :user="user"
+        v-if="profile"
+        :profile="profile"
         @sign-out="signOut"
       />
       <WidgetsHeaderTools v-else />
@@ -13,7 +13,7 @@
   </header>
 </template>
 <script setup lang="ts">
-const user = useProfile().user;
+const profile = useProfile().user;
 
 const signOut = () => {
   useProfile().signOut();
@@ -40,6 +40,10 @@ header.header {
     height: 100%;
     margin: 0 auto;
     gap: 1rem;
+
+    @media (max-width: $adaptive-breakpoint-normal) {
+      gap: 0.25rem;
+    }
   }
 }
 </style>
