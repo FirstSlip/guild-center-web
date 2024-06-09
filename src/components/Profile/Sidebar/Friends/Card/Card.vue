@@ -1,32 +1,31 @@
 <template>
-  <div class="guild">
-    <div class="avatar">
-      <WidgetsAvatar
-        :avatar-url="avatarUrl"
-        :name="name"
-        type="Guild"
-      />
+  <nuxt-link class="friend" :to="`/profile_${tag}`">
+    <div class="friend-avatar">
+      <WidgetsAvatar :avatar-url="avatarUrl" :name="name" />
     </div>
     <p class="p3">
       {{ name }}
     </p>
-  </div>
+  </nuxt-link>
 </template>
 
 <script lang="ts" setup>
 defineProps<{
   name: string;
   avatarUrl?: string;
+  tag: string;
 }>();
 </script>
 
 <style lang="scss" scoped>
-.guild {
+a.friend {
   display: flex;
   gap: 0.5rem;
   align-items: center;
 
-  .avatar {
+  text-decoration: none;
+
+  .friend-avatar {
     width: 2.5rem;
     height: 2.5rem;
     min-width: 2.5rem;

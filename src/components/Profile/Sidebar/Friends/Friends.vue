@@ -8,6 +8,7 @@
       v-for="(friend, index) in friends"
       :key="index"
       :name="friend.username"
+      :tag="friend.tag"
       :avatar-url="friend.avatar"
     />
     <p v-if="friends.length <= 0" class="no-friends">
@@ -20,7 +21,7 @@
       <SVGSadSmile v-if="isMyProfile" />
       <UILink
         v-if="isMyProfile"
-        :to="`/profile_${id}/friends`"
+        :to="`/profile_${id}/friends?tab=search`"
         font-type="p2"
       >
         Поиск

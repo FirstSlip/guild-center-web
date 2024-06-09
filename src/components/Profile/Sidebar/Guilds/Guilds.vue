@@ -8,7 +8,8 @@
       v-for="(guild, index) in guilds"
       :key="index"
       :name="guild.name"
-      :avatar-url="guild.avatar"
+      :guild-id="guild.guildId"
+      :avatar="guild.avatar"
     />
     <p v-if="guilds.length <= 0" class="no-guilds">
       <span v-if="isMyProfile" class="p2">

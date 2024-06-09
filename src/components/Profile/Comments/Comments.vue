@@ -70,7 +70,9 @@ const emit = defineEmits<{
 
 const comment = ref('');
 
-const comments = computed(() => props.user?.comments || []);
+const comments = computed(
+  () => props.user?.comments.reverse() || []
+);
 
 const sendMessage = async () => {
   if (!comment.value || comment.value.length <= 0) {

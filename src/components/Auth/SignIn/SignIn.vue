@@ -39,7 +39,7 @@ const email = ref('');
 const password = ref('');
 const submit = async () => {
   const response = await $api.auth.signIn({
-    username: email.value,
+    email: email.value,
     password: password.value
   });
   if ($api.utils.isSuccess(response)) {
