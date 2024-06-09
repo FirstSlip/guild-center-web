@@ -33,7 +33,7 @@
 <script lang="ts" setup>
 const route = useRoute();
 const id = computed(() => route.params.id);
-import type { ShortUser } from '@/ts/shortUser';
+import type { ShortUser } from '@/ts/ShortUser';
 
 defineProps<{
   friends: ShortUser[];

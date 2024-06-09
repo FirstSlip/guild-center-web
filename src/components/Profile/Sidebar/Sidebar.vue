@@ -14,7 +14,7 @@
 
 <script lang="ts" setup>
 import type { ShortGuild } from '@/ts/ShortGuild';
-import type { ShortUser } from '@/ts/shortUser';
+import type { ShortUser } from '@/ts/ShortUser';
 
 defineProps<{
   friends: ShortUser[];
