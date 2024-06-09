@@ -12,7 +12,6 @@ export const request = async <
 ) => {
   const runtimeConfig = useRuntimeConfig();
   const token = useCookie('token');
-  console.log('token1', token.value);
 
   const options = opts || {};
 
