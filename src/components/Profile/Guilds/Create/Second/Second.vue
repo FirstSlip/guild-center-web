@@ -31,65 +31,32 @@
       </transition-group>
     </div>
     <div class="buttons">
-      <UIButton type="primary" fill @click="$emit('next')">
+      <UIButton type="primary" fill @click="next">
         Продолжить
       </UIButton>
       <UIButton type="blank" fill @click="$emit('prev')">
         Назад
       </UIButton>
+      <p v-if="isError" class="error">
+        Вы должны выбрать хотя бы одну игру
+      </p>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-defineEmits<{
+import { gamesArray } from '@/common/data/gamesArray';
+
+const emit = defineEmits<{
   (e: 'next'): void;
   (e: 'prev'): void;
 }>();
 
+const isError = ref(false);
 const search = ref('');
-const games = ref([
-  {
-    name: 'World of Warcraft',
-    selected: false
-  },
-  {
-    name: 'Final Fantasy XIV',
-    selected: false
-  },
-  {
-    name: 'Lost Ark',
-    selected: false
-  },
-  {
-    name: 'Black Desert',
-    selected: false
-  },
-  {
-    name: 'Dota 2',
-    selected: false
-  },
-  {
-    name: 'League of Legends',
-    selected: false
-  },
-  {
-    name: 'Smite',
-    selected: false
-  },
-  {
-    name: 'Destiny 2',
-    selected: false
-  },
-  {
-    name: 'Warframe',
-    selected: false
-  },
-  {
-    name: 'Escape from Tarkov',
-    selected: false
-  }
-]);
+const games = ref(
+  gamesArray.map((game) => ({ ...game, selected: false }))
+);
 
 const model = defineModel<string[]>();
 watch(
@@ -98,9 +65,18 @@ watch(
     model.value = games.value
       .filter((game) => game.selected)
       .map((game) => game.name);
+    isError.value = false;
   },
   { deep: true }
 );
+
+(model.value || []).forEach((game) => {
+  const selected = games.value.find((g) => g.name === game);
+  if (selected) {
+    selected.selected = true;
+  }
+});
+
 const totalGamesSelected = computed(() =>
   games.value.reduce((acc, game) => acc + +game.selected, 0)
 );
@@ -109,6 +85,14 @@ const filteredGames = computed(() =>
     game.name.toLowerCase().includes(search.value.toLowerCase())
   )
 );
+
+const next = () => {
+  if (totalGamesSelected.value <= 0) {
+    isError.value = true;
+    return;
+  }
+  emit('next');
+};
 </script>
 
 <style lang="scss" scoped>
@@ -145,6 +129,7 @@ const filteredGames = computed(() =>
   }
 
   .buttons {
+    position: relative;
     margin: auto auto 0;
     width: 22rem;
 
@@ -153,6 +138,15 @@ const filteredGames = computed(() =>
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+
+    p.error {
+      position: absolute;
+      top: 100%;
+      width: 100%;
+      margin-top: 0.25rem;
+      color: $red;
+      text-align: center;
+    }
   }
 }
 
