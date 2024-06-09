@@ -1,7 +1,7 @@
 import { request } from '@/common/func/request';
 
 export const signIn = async (bodyParams: {
-  username: string;
+  email: string;
   password: string;
 }) => {
   const token = useCookie('token', {
