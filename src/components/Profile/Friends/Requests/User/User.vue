@@ -28,10 +28,14 @@
       <button
         v-if="request.requestType === 'incoming'"
         class="accept"
+        @click="acceptRequest(request.code)"
       >
         <SVGCheck />
       </button>
-      <button class="decline">
+      <button
+        class="decline"
+        @click="declineRequest(request.code)"
+      >
         <SVGCross color="#F04451" />
       </button>
     </div>
@@ -39,13 +43,33 @@
 </template>
 
 <script lang="ts" setup>
-import type { ShortUser } from '@/ts/shortUser';
+import type { ShortUser } from '@/ts/ShortUser';
 
 defineProps<{
   request: ShortUser & {
     requestType: 'outcoming' | 'incoming';
+    code: string;
   };
 }>();
+
+const emit = defineEmits<{
+  (e: 'accepted'): void;
+  (e: 'declined'): void;
+}>();
+
+const acceptRequest = async (code: string) => {
+  const response = await $api.user.friends.acceptRequest(code);
+  if ('success' in response && response.success) {
+    emit('accepted');
+  }
+};
+
+const declineRequest = async (code: string) => {
+  const response = await $api.user.friends.declineRequest(code);
+  if ('success' in response && response.success) {
+    emit('declined');
+  }
+};
 </script>
 
 <style lang="scss" scoped>
