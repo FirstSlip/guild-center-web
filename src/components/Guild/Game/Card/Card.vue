@@ -4,7 +4,7 @@
     @click="$emit('click')"
   >
     <img
-      :src="`/img/games/${gameName.replaceAll(' ', '_')}.png`"
+      :src="`/img/games/${gameName.replaceAll(':', '').replaceAll(' ', '_')}.png`"
       :alt="gameName"
     />
     <p class="h5">{{ gameName }}</p>
