@@ -39,7 +39,8 @@
       />
       <ProfileGuildsCreateFourth
         v-else-if="currentStep === 4"
-        v-model="age"
+        v-model:age="age"
+        v-model:privacy="privacy"
         @next="addStep"
         @prev="reduceStep"
       />
@@ -49,7 +50,7 @@
         :selected-games="selectedGames"
         :selected-game-types="selectedGameTypes"
         :age="age"
-        @next="addStep"
+        @next="submit"
         @prev="reduceStep"
       />
     </transition>
@@ -57,17 +58,46 @@
 </template>
 
 <script lang="ts" setup>
+import { gamesArray } from '@/common/data/gamesArray';
+
 const guildName = ref('');
 const selectedGames = ref<string[]>([]);
 const selectedGameTypes = ref<string[]>([]);
+const privacy = ref<0 | 1>(0);
 const age = ref({
-  to: 12,
-  from: 90
+  from: 12,
+  to: 90
 });
 
 const currentStep = ref(1);
 const addStep = () => currentStep.value++;
 const reduceStep = () => currentStep.value--;
+
+const submit = async () => {
+  if (guildName.value.length <= 0) {
+    return;
+  }
+  const finalGamesArray = gamesArray.filter((game) =>
+    selectedGames.value.includes(game.name)
+  );
+  const response = await $api.guild.createGuild({
+    name: guildName.value,
+    avatar: 'https://i.pravatar.cc/300',
+    games: finalGamesArray.map((game) => {
+      return { name: game.name, genre: game.genres[0] };
+    }),
+    trends: selectedGameTypes.value,
+    privacy: !!privacy.value,
+    age: {
+      min: age.value.from,
+      max: age.value.to
+    }
+  });
+
+  if ($api.utils.isSuccess(response)) {
+    useRouter().push(`/guild/${response.data.guildId}`);
+  }
+};
 </script>
 
 <style lang="scss" scoped>
