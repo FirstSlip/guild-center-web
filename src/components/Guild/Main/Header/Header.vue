@@ -3,8 +3,8 @@
     <div
       class="banner"
       :style="
-        currentGuild?.bannerUrl
-          ? `background-image: url(${currentGuild.bannerUrl})`
+        guild?.banner
+          ? `background-image: url(${guild.banner})`
           : `background: ${bannerColor}`
       "
     ></div>
@@ -12,14 +12,14 @@
       <div class="guild-info">
         <div class="guild-avatar">
           <WidgetsAvatar
-            :avatar-url="currentGuild?.avatarUrl"
-            :name="currentGuild?.name || 'Загрузка...'"
+            :avatar-url="guild?.avatar"
+            :name="guild?.name || 'Загрузка...'"
           />
         </div>
         <div class="info">
           <h1 class="h4">
             <span>
-              {{ currentGuild?.name || 'Загрузка...' }}
+              {{ guild?.name || 'Загрузка...' }}
             </span>
           </h1>
           <span class="h5">статус Гильдии</span>
@@ -46,6 +46,17 @@
 
 <script lang="ts" setup>
 import { generateAvatarColor } from '@/common/func/generateAvatarColor';
+import type { Guild } from '@/ts/Guild';
+const props = defineProps<{
+  currentTab:
+    | ''
+    | 'rules'
+    | 'discussions'
+    | 'tasks'
+    | 'calendar';
+  guild: Guild | null;
+  guildId: string;
+}>();
 
 const route = useRoute();
 const currentGuildId = computed(
@@ -53,50 +64,44 @@ const currentGuildId = computed(
 );
 
 const bannerColor = computed(() => {
-  return generateAvatarColor(
-    currentGuild.value?.name || 'Загрузка...'
-  ).bg;
+  return generateAvatarColor(props.guild?.name || 'Загрузка...')
+    .bg;
 });
 
-const currentGuild = computed(() => {
-  const guilds = useGuilds().value;
-  console.log(guilds.map((guild) => guild.id));
-  return guilds.find(
-    (guild) => guild.id === currentGuildId.value
-  );
-});
-const currentTab = computed(() => route.path);
-/* const currentTab = ref('1'); */
-const tabs = computed(() => [
-  { title: 'описание', href: `/guild/${currentGuildId.value}` },
+const tabs = [
+  {
+    title: 'описание',
+    href: `/guild/${currentGuildId.value}`,
+    tab: ''
+  },
   {
     title: 'правила',
-    href: `/guild/${currentGuildId.value}/rules`
+    href: `/guild/${currentGuildId.value}?tab=rules`,
+    tab: 'rules'
   },
   {
     title: 'обсуждения',
-    href: `/guild/${currentGuildId.value}/discussions`
+    href: `/guild/${currentGuildId.value}?tab=discussions`,
+    tab: 'discussions'
   },
   {
     title: 'задания',
-    href: `/guild/${currentGuildId.value}/tasks`
+    href: `/guild/${currentGuildId.value}?tab=tasks`,
+    tab: 'tasks'
   },
   {
     title: 'календарь',
-    href: `/guild/${currentGuildId.value}/calendar`
+    href: `/guild/${currentGuildId.value}?tab=calendar`,
+    tab: 'calendar'
   }
-]);
+];
 
 const currentTabIndex = computed(() => {
-  return tabs.value.findIndex(
-    (tab) =>
-      tab.href === currentTab.value ||
-      tab.href === currentTab.value.slice(0, -1)
-  );
+  return tabs.findIndex((tab) => props.currentTab === tab.tab);
 });
 
 const switchTab = (index: number) => {
-  useRouter().push(tabs.value[index].href);
+  useRouter().push(tabs[index].href);
 };
 </script>
 

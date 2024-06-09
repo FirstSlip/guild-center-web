@@ -3,37 +3,87 @@
     <div class="members">
       <h2 class="h4">
         <span>Участники</span>
-        <span class="h5">{{ members.length }}</span>
+        <span class="h5">{{ computedMembers.length }}</span>
       </h2>
-      <p class="p4">
-        Администратор -
-        {{ admins.length }}
-      </p>
+      <!-- <p class="p4">Администратор -</p>
       <GuildMainMembersCard
-        v-for="(admin, index) in admins"
+        v-for="(admin, index) in membersGroupedByRole.admins"
         :key="index"
-        :name="admin.name"
-        :avatar-url="admin.avatarUrl"
+        :name="admin.user.username"
+        :avatar-url="admin.user.avatar"
         role="Администратор"
       />
       <div class="separator"></div>
-      <p class="p4">
-        Рекрут -
-        {{ recruts.length }}
-      </p>
+      <p class="p4">Рекрут -</p>
       <GuildMainMembersCard
-        v-for="(recrut, index) in recruts"
+        v-for="(
+          recrut, index
+        ) in membersGroupedByRole.defaultMembers"
         :key="index"
-        :name="recrut.name"
-        :avatar-url="recrut.avatarUrl"
+        :name="recrut.user.username"
+        :avatar-url="recrut.user.avatar"
         role="Рекрут"
-      />
+      /> -->
+      <div
+        class="member-block"
+        v-for="(role, index) in Object.keys(
+          membersGroupedByRole
+        )"
+        :key="index"
+      >
+        <p class="p4">
+          {{
+            Role[
+              role.substring(
+                0,
+                role.length - 1
+              ) as keyof typeof Role
+            ]
+          }}
+          -
+          {{
+            membersGroupedByRole[
+              role as keyof typeof membersGroupedByRole
+            ].length
+          }}
+        </p>
+        <GuildMainMembersCard
+          v-for="(member, index) in membersGroupedByRole[
+            role as keyof typeof membersGroupedByRole
+          ]"
+          :key="index"
+          :name="member.user.username"
+          :avatar-url="member.user.avatar"
+          :role="
+            Role[
+              role.substring(
+                0,
+                role.length - 1
+              ) as keyof typeof Role
+            ]
+          "
+        />
+        <div
+          class="separator"
+          v-if="index < Object.keys(Role).length - 1"
+        ></div>
+      </div>
     </div>
   </section>
 </template>
 
 <script lang="ts" setup>
-const members: {
+import type { GuildMember } from '@/ts/GuildMember';
+
+const props = defineProps<{
+  members: GuildMember[];
+}>();
+
+console.log('members', props.members);
+
+const computedMembers = computed(() => props.members || []);
+
+/* const members: {
   name: string;
   avatarUrl?: string;
   role: string;
@@ -47,14 +97,32 @@ const members: {
     role: 'Рекрут'
   },
   { name: 'GITGUD', role: 'Рекрут' }
-];
+]; */
 
-const admins = members.filter(
-  (member) => member.role === 'Администратор'
-);
-const recruts = members.filter(
-  (member) => member.role === 'Рекрут'
-);
+enum Role {
+  admin = 'Администратор',
+  moderator = 'Модератор',
+  defaultMember = 'Участник'
+}
+
+const membersGroupedByRole = computed(() => {
+  const members = computedMembers.value;
+  const admins = members.filter(
+    (member) => member.role === 'admin'
+  );
+  const moderators = members.filter(
+    (member) => member.role === 'moderator'
+  );
+  const defaultMembers = members.filter(
+    (member) => member.role === 'member'
+  );
+
+  return {
+    admins,
+    moderators,
+    defaultMembers
+  };
+});
 </script>
 
 <style lang="scss" scoped>
@@ -73,10 +141,6 @@ section.sidebar {
     flex-direction: column;
     gap: 0.625rem;
 
-    p.p4 {
-      color: $text-white-60;
-    }
-
     h2.h4 {
       display: flex;
       justify-content: space-between;
@@ -85,6 +149,16 @@ section.sidebar {
 
       span.h5 {
         color: $main;
+      }
+    }
+
+    .member-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0.625rem;
+
+      p.p4 {
+        color: $text-white-60;
       }
     }
   }
