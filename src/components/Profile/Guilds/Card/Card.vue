@@ -1,37 +1,47 @@
 <template>
-  <div class="card">
+  <nuxt-link class="card" :to="`/guild/${guild.guildId}`">
     <div
       class="banner"
       :style="{ backgroundColor: bannerColor }"
     ></div>
     <div class="header">
       <div class="guild-avatar">
-        <WidgetsAvatar type="Guild" :name="guild.name" />
+        <WidgetsAvatar
+          type="Guild"
+          :name="guild.name"
+          :avatar-url="guild.avatar"
+        />
       </div>
       <div class="info">
         <h2 class="h4">{{ guild.name }}</h2>
-        <p class="p4">Краткое описание гильдии {{}}</p>
-        <p class="p4">Количество участников: {{}}</p>
+        <p class="p4">
+          {{ guild.description }}
+        </p>
+        <p class="p4">
+          Количество участников: {{ guild.members?.length || 0 }}
+        </p>
       </div>
     </div>
     <div class="footer">
-      <div v-for="game in guild.games" class="game"></div>
+      <img
+        v-for="(game, index) in guild.games"
+        :key="index"
+        class="game"
+        :src="`/img/games/${game.name.replaceAll(' ', '_')}.png`"
+      />
     </div>
-  </div>
+  </nuxt-link>
 </template>
 
 <script lang="ts" setup>
 import { generateAvatarColor } from '@/common/func/generateAvatarColor';
+import type { Guild } from '@/ts/Guild';
 
 const props = defineProps<{
-  guild: {
-    id: number;
-    name: string;
-    avatarUrl?: string;
-    bannerUrl?: string;
-    games: [];
-  };
+  guild: Guild;
 }>();
+
+console.log(props.guild);
 
 const bannerColor = computed(() => {
   return generateAvatarColor(props.guild.name).bg;
@@ -39,12 +49,14 @@ const bannerColor = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-.card {
+a.card {
   position: relative;
   width: 100%;
   height: 8.75rem;
   border-radius: 1.25rem;
   overflow: hidden;
+
+  text-decoration: none;
 
   .banner {
     position: absolute;
@@ -59,17 +71,33 @@ const bannerColor = computed(() => {
   .header {
     position: relative;
     width: 100%;
+    height: calc(8.75rem - 3.125rem);
     display: flex;
     gap: 0.625rem;
     padding: 0.5rem 1.25rem;
 
     z-index: 1;
+    flex-flow: row;
 
     .guild-avatar {
       width: 4.375rem;
       height: 4.375rem;
       border: 3px solid $light-purple;
       border-radius: 100%;
+      flex-shrink: 0;
+    }
+
+    .info {
+      flex-shrink: 1;
+      flex-grow: 0;
+      max-width: calc(100% - 4.375rem - 0.625rem);
+
+      h2,
+      p {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
   }
 
