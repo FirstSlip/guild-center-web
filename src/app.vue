@@ -5,7 +5,37 @@
 </template>
 
 <script setup lang="ts">
+import type { FriendRequest } from './ts/FriendRequest';
+
 await useProfile().loadProfile();
+const profile = useProfile().user;
+
+onMounted(() => {
+  const socket = useSocket().socket.value;
+
+  socket.on('connect', () => {
+    console.log('Session connected');
+  });
+
+  socket.on('error', (error) => {
+    console.error(error);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('Session disconnected');
+  });
+
+  socket.on('friendSuccess', async () => {
+    await useProfile().loadProfile();
+  });
+
+  socket.on(
+    'friendRequest',
+    (req: { request: FriendRequest }) => {
+      profile.value?.friendRequests.push(req.request);
+    }
+  );
+});
 </script>
 
 <style lang="scss">
