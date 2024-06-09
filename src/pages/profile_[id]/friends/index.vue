@@ -6,12 +6,15 @@
   >
     <transition name="settings" mode="out-in">
       <ProfileFriendsMain
-        :friends="mockFriends"
+        :friends="profile?.friends || []"
         v-if="currentTab === ''"
       />
       <ProfileFriendsRequests
         v-else-if="currentTab === 'requests'"
-        :requests="mockRequests"
+        :requests="profile?.friendRequests || []"
+        :my-tag="profile?.tag || ''"
+        @accepted="onAccepted"
+        @declined="onDeclined"
       />
       <ProfileFriendsBlocked
         v-else-if="currentTab === 'blocked'"
@@ -19,12 +22,16 @@
       />
       <ProfileFriendsSearch
         v-else-if="currentTab === 'search'"
+        :my-friends="profile?.friends || []"
+        :requests="profile?.friendRequests || []"
+        :my-tag="profile?.tag || ''"
       />
     </transition>
   </ProfileFriendsWrapper>
 </template>
 
 <script lang="ts" setup>
+const profile = useProfile().user;
 const route = useRoute();
 const currentTab = computed<string>(() => route.query.tab || '');
 const tabs = [
@@ -50,6 +57,19 @@ const tabs = [
   }
 ];
 
+const onAccepted = async (code: string) => {
+  await useProfile().loadProfile();
+};
+
+const onDeclined = (code: string) => {
+  if (!profile.value) return;
+  const requestsWithoutDeclined =
+    profile.value.friendRequests.filter(
+      (request) => request.code !== code
+    );
+  profile.value.friendRequests = requestsWithoutDeclined;
+};
+
 const switchTab = (index: number) => {
   useRouter().push(tabs[index].href);
 };
@@ -57,63 +77,6 @@ const switchTab = (index: number) => {
 const currentTabIndex = computed(() => {
   return tabs.findIndex((tab) => currentTab.value === tab.tab);
 });
-
-const mockFriends = ref([
-  {
-    tag: '123123',
-    username: 'username',
-    avatar: ''
-  },
-  {
-    tag: '123123',
-    username: 'Степан',
-    avatar: ''
-  },
-  {
-    tag: '123123',
-    username: 'FFF',
-    avatar: ''
-  }
-]);
-const mockRequests = ref<
-  {
-    tag: string;
-    username: string;
-    avatar: string;
-    requestType: 'incoming' | 'outcoming';
-  }[]
->([
-  {
-    tag: '123123',
-    username: 'chel_out',
-    avatar: '',
-    requestType: 'outcoming'
-  },
-  {
-    tag: '123123',
-    username: 'chel1123_out',
-    avatar: '',
-    requestType: 'outcoming'
-  },
-  {
-    tag: '123123',
-    username: 'chel3333_in',
-    avatar: '',
-    requestType: 'incoming'
-  },
-  {
-    tag: '123123',
-    username: 'chel310000000_out',
-    avatar: '',
-    requestType: 'outcoming'
-  },
-  {
-    tag: '123123',
-    username: 'chel310000000_in',
-    avatar: '',
-    requestType: 'incoming'
-  }
-]);
 const mockBlocked = ref([
   {
     tag: '123123',

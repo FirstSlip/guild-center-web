@@ -1,30 +1,37 @@
 <template>
-  <ProfileHeader
-    :current-tab="selectedTab"
-    :profile="finalUser"
-    :id="id"
-    :is-my-profile="isMyProfile"
-  />
-  <div
-    :class="['profile', selectedTab === 'calendar' && 'filled']"
-  >
-    <ProfileIntegrations v-if="selectedTab === 'integrations'" />
-    <ProfileAccounts v-else-if="selectedTab === 'accounts'" />
-    <ProfileCalendar v-else-if="selectedTab === 'calendar'" />
-    <ProfileComments
-      v-else
-      :user="finalUser"
+  <div class="profile-page">
+    <ProfileHeader
+      :current-tab="selectedTab"
+      :profile="finalUser"
       :id="id"
       :is-my-profile="isMyProfile"
-      :my-profile="profile"
-      @comment-sent="onCommentSent"
     />
-    <ProfileSidebar
-      v-if="selectedTab !== 'calendar'"
-      :friends="profile?.friends || []"
-      :guilds="profile?.guilds || []"
-      :is-my-profile="isMyProfile"
-    />
+    <div
+      :class="[
+        'profile',
+        selectedTab === 'calendar' && 'filled'
+      ]"
+    >
+      <ProfileIntegrations
+        v-if="selectedTab === 'integrations'"
+      />
+      <ProfileAccounts v-else-if="selectedTab === 'accounts'" />
+      <ProfileCalendar v-else-if="selectedTab === 'calendar'" />
+      <ProfileComments
+        v-else
+        :user="finalUser"
+        :id="id"
+        :is-my-profile="isMyProfile"
+        :my-profile="profile"
+        @comment-sent="onCommentSent"
+      />
+      <ProfileSidebar
+        v-if="selectedTab !== 'calendar'"
+        :friends="finalUser?.friends || []"
+        :guilds="finalUser?.guilds || []"
+        :is-my-profile="isMyProfile"
+      />
+    </div>
   </div>
 </template>
 
@@ -57,6 +64,17 @@ const isMyProfile = computed(
   () => profile.value?.tag === id.value
 );
 
+const isFriend = computed(() => {
+  if (isMyProfile.value) {
+    return false;
+  }
+  return (
+    profile.value?.friends?.some(
+      (friend) => friend.tag === id.value
+    ) || false
+  );
+});
+
 const finalUser = computed(() => {
   if (isMyProfile.value) {
     return profile.value;
@@ -83,7 +101,10 @@ const onCommentSent = () => {
   useProfile().loadProfile();
   refresh();
 };
-definePageMeta({ layout: 'profile' });
+definePageMeta({
+  layout: 'profile',
+  pageTransition: { name: 'profile-fade', mode: 'out-in' }
+});
 </script>
 
 <style lang="scss" scoped>
@@ -97,5 +118,18 @@ definePageMeta({ layout: 'profile' });
   &.filled {
     display: block;
   }
+}
+
+.profile-fade-enter-active,
+.profile-fade-leave-active {
+  transition: all 0.3s ease;
+}
+.profile-fade-enter-from {
+  opacity: 0;
+  transform: translateX(100%);
+}
+.profile-fade-leave-to {
+  opacity: 0;
+  transform: translateX(-100%);
 }
 </style>
