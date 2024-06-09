@@ -16,11 +16,22 @@
       </div>
     </div>
     <div class="tools">
+      <span v-if="alreadyFriend" class="already-friend">
+        В друзьях
+      </span>
+      <span v-else-if="user.tag === myTag" class="sent">
+        Ваш профиль
+      </span>
+      <span v-else-if="alreadySent" class="sent">
+        Отправлено
+      </span>
       <UIButton
+        v-else
         type="primary"
         font-type="h5"
         borderRadius="0.25rem"
         padding="0 1.25rem"
+        @click="addFriend"
       >
         Добавить в друзья
       </UIButton>
@@ -29,11 +40,44 @@
 </template>
 
 <script lang="ts" setup>
-import type { ShortUser } from '@/ts/shortUser';
+import type { FriendRequest } from '@/ts/FriendRequest';
+import type { ShortUser } from '@/ts/ShortUser';
+import type { DefaultEventsMap } from '@socket.io/component-emitter';
+import type { Socket } from 'socket.io-client';
 
-defineProps<{
+const props = defineProps<{
   user: ShortUser;
+  myFriends: ShortUser[];
+  requests: FriendRequest[];
+  myTag: string;
 }>();
+let socket: Socket<DefaultEventsMap, DefaultEventsMap> | null =
+  null;
+
+const alreadyFriend = computed(() => {
+  return props.myFriends.some((friend) => {
+    return friend.tag === props.user.tag;
+  });
+});
+
+const alreadySent = computed(() => {
+  return props.requests.some((request) => {
+    return request.recipient.tag === props.user.tag;
+  });
+});
+
+onMounted(() => {
+  socket = useSocket().socket.value;
+});
+
+const addFriend = () => {
+  if (socket) {
+    socket.emit('Friends', {
+      event: 'sendFriendRequest',
+      recipientTag: props.user.tag
+    });
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -70,6 +114,10 @@ defineProps<{
     display: flex;
     align-items: center;
     gap: 0.75rem;
+
+    span {
+      color: $main;
+    }
 
     a.chat {
       width: 2rem;

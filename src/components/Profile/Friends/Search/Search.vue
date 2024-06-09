@@ -17,12 +17,23 @@
         v-for="user in users"
         :key="user.tag"
         :user="user"
+        :my-friends="myFriends"
+        :my-tag="myTag"
+        :requests="requests"
       />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import type { FriendRequest } from '@/ts/FriendRequest';
+import type { ShortUser } from '@/ts/ShortUser';
+
+defineProps<{
+  myFriends: ShortUser[];
+  requests: FriendRequest[];
+  myTag: string;
+}>();
 const users = ref([
   {
     tag: '1234',
@@ -52,7 +63,11 @@ const findUsers = async () => {
   }
   const username = searchTerms[0];
   const tag = searchTerms[1] || '';
-  const response = await $api.user.findByUsername(username, tag);
+  const response = await $api.user.findByUsername(
+    username,
+    tag,
+    1
+  );
   if ($api.utils.isSuccess(response)) {
     users.value = response.data.users;
   }
