@@ -9,7 +9,7 @@
           <span>Исходящие</span>
           <span class="number">
             {{
-              requests.filter(
+              requestWithType.filter(
                 ({ requestType }) => requestType === 'outcoming'
               ).length
             }}
@@ -19,7 +19,7 @@
           <span>Входящие</span>
           <span class="number">
             {{
-              requests.filter(
+              requestWithType.filter(
                 ({ requestType }) => requestType === 'incoming'
               ).length
             }}
@@ -28,10 +28,12 @@
       </div>
     </div>
     <div class="list">
-      <ProfileFriendsRequestsFriend
+      <ProfileFriendsRequestsUser
         v-for="request in filteredRequests"
         :key="request.tag"
         :request="request"
+        @accepted="$emit('accepted', request.code)"
+        @declined="$emit('declined', request.code)"
       />
     </div>
   </div>
@@ -39,18 +41,50 @@
 
 <script lang="ts" setup>
 import { filterUsersWithSearch } from '@/common/func/filterUsersWithSearch';
-import type { ShortUser } from '@/ts/shortUser';
+import type { FriendRequest } from '@/ts/FriendRequest';
+import type { ShortUser } from '@/ts/ShortUser';
+
+type Request = ShortUser & {
+  code: string;
+  requestType: 'outcoming' | 'incoming';
+};
 
 const props = defineProps<{
-  requests: (ShortUser & {
-    requestType: 'outcoming' | 'incoming';
-  })[];
+  requests: FriendRequest[];
+  myTag: string;
 }>();
+
+defineEmits<{
+  (e: 'accepted', code: string): void;
+  (e: 'declined', code: string): void;
+}>();
+
+const requestWithType: ComputedRef<Request[]> = computed(() =>
+  props.requests.map((request): Request => {
+    if (request.sender.tag === props.myTag) {
+      return {
+        tag: request.recipient.tag,
+        username: request.recipient.username,
+        avatar: request.recipient.avatar,
+        code: request.code,
+        requestType: 'outcoming'
+      };
+    } else {
+      return {
+        tag: request.sender.tag,
+        username: request.sender.username,
+        avatar: request.sender.avatar,
+        code: request.code,
+        requestType: 'incoming'
+      };
+    }
+  })
+);
 
 const search = ref('');
 
 const sortedRequests = computed(() => {
-  return [...props.requests].reverse().sort((a, b) => {
+  return [...requestWithType.value].reverse().sort((a, b) => {
     if (a.requestType === 'outcoming') {
       return -1;
     }
@@ -62,10 +96,10 @@ const sortedRequests = computed(() => {
 });
 
 const filteredRequests = computed(() => {
-  return filterUsersWithSearch(
-    sortedRequests.value,
-    search.value
-  );
+  return filterUsersWithSearch<{
+    code: string;
+    requestType: 'outcoming' | 'incoming';
+  }>(sortedRequests.value, search.value);
 });
 </script>
 
