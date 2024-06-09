@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { ShortUser } from '@/ts/shortUser';
+import type { ShortUser } from '@/ts/ShortUser';
 
 defineProps<{
   blockedUser: ShortUser;

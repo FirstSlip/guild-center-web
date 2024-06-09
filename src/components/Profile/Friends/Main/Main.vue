@@ -21,7 +21,7 @@
 
 <script lang="ts" setup>
 import { filterUsersWithSearch } from '@/common/func/filterUsersWithSearch';
-import type { ShortUser } from '@/ts/shortUser';
+import type { ShortUser } from '@/ts/ShortUser';
 
 const props = defineProps<{
   friends: ShortUser[];
