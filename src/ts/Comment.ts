@@ -1,4 +1,4 @@
-import type { ShortUser } from './shortUser';
+import type { ShortUser } from './ShortUser';
 
 export type Comment = {
   commentId: string;

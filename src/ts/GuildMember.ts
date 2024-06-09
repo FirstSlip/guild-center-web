@@ -1,6 +1,7 @@
-import type { ShortUser } from '@/ts/shortUser';
+import type { ShortUser } from '@/ts/ShortUser';
 import type { Role } from '@/ts/Role';
 
-export type GuildMember = ShortUser & {
+export type GuildMember = {
+  user: ShortUser;
   role: Role;
 };

@@ -1,4 +1,4 @@
-import type { ShortUser } from '@/ts/shortUser';
+import type { ShortUser } from '@/ts/ShortUser';
 
 export type FriendRequest = {
   code: string;
