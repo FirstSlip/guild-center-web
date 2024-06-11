@@ -5,12 +5,19 @@
       <span class="h5">{{ friends.length }}</span>
     </h2>
     <ProfileSidebarFriendsCard
-      v-for="(friend, index) in friends"
+      v-for="(friend, index) in friends.slice(0, 3)"
       :key="index"
       :name="friend.username"
       :tag="friend.tag"
       :avatar-url="friend.avatar"
     />
+    <nuxt-link
+      v-if="friends.length > 3"
+      :to="`/profile_${id}/friends`"
+      class="see-more"
+    >
+      смотреть больше
+    </nuxt-link>
     <p v-if="friends.length <= 0" class="no-friends">
       <span v-if="isMyProfile" class="p2">
         У вас еще нет друзей
@@ -31,14 +38,15 @@
 </template>
 
 <script lang="ts" setup>
-const route = useRoute();
-const id = computed(() => route.params.id);
 import type { ShortUser } from '@/ts/ShortUser';
 
 defineProps<{
   friends: ShortUser[];
   isMyProfile?: boolean;
 }>();
+
+const route = useRoute();
+const id = computed(() => route.params.id);
 </script>
 
 <style lang="scss" scoped>
@@ -51,6 +59,10 @@ defineProps<{
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    span.h5 {
+      color: $main;
+    }
   }
 
   p.no-friends {
@@ -64,6 +76,14 @@ defineProps<{
       color: $text-white-60;
       text-align: center;
     }
+  }
+
+  a.see-more {
+    font-weight: 400;
+    font-size: 0.75rem;
+    line-height: 155%;
+    color: $text-white-60;
+    text-decoration: none;
   }
 }
 </style>

@@ -5,12 +5,19 @@
       <span class="h5">{{ guilds.length }}</span>
     </h2>
     <ProfileSidebarGuildsCard
-      v-for="(guild, index) in guilds"
+      v-for="(guild, index) in guilds.slice(0, 3)"
       :key="index"
       :name="guild.name"
       :guild-id="guild.guildId"
       :avatar="guild.avatar"
     />
+    <nuxt-link
+      v-if="guilds.length > 3"
+      :to="`/profile_${id}/friends`"
+      class="see-more"
+    >
+      смотреть больше
+    </nuxt-link>
     <p v-if="guilds.length <= 0" class="no-guilds">
       <span v-if="isMyProfile" class="p2">
         У вас еще нет гильдий
@@ -33,6 +40,9 @@ defineProps<{
   guilds: ShortGuild[];
   isMyProfile?: boolean;
 }>();
+
+const route = useRoute();
+const id = computed(() => route.params.id);
 </script>
 
 <style lang="scss" scoped>
@@ -45,6 +55,10 @@ defineProps<{
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    span.h5 {
+      color: $main;
+    }
   }
 
   p.no-guilds {
@@ -58,6 +72,14 @@ defineProps<{
       color: $text-white-60;
       text-align: center;
     }
+  }
+
+  a.see-more {
+    font-weight: 400;
+    font-size: 0.75rem;
+    line-height: 155%;
+    color: $text-white-60;
+    text-decoration: none;
   }
 }
 </style>
