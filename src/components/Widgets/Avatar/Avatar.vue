@@ -14,7 +14,11 @@
       v-if="avatarType === 'User'"
       :stroke="avatarColor.stroke"
     />
-    <SVGCastle v-else :stroke="avatarColor.stroke" />
+    <SVGCastle
+      v-else-if="avatarType === 'Guild'"
+      :stroke="avatarColor.stroke"
+    />
+    <SVGChat v-else :stroke="avatarColor.stroke" />
   </div>
 </template>
 
@@ -22,7 +26,7 @@
 import { generateAvatarColor } from '@/common/func/generateAvatarColor';
 
 const props = defineProps<{
-  type?: 'User' | 'Guild';
+  type?: 'User' | 'Guild' | 'Chat';
   avatarUrl?: string;
   name: string;
 }>();

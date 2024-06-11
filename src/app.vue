@@ -8,6 +8,7 @@
 import type { FriendRequest } from './ts/FriendRequest';
 
 await useProfile().loadProfile();
+await useChats().loadChats();
 const profile = useProfile().user;
 
 onMounted(() => {

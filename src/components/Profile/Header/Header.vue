@@ -22,20 +22,21 @@
               {{ profile?.username || 'Загрузка...' }}
             </span>
             <span>#{{ id || 'Загрузка...' }}</span>
+            <UIButton
+              v-if="isMyProfile"
+              class="edit-profile"
+              font-type="h5"
+              padding="0 1.25rem"
+              border-radius="0.25rem"
+              @click="$router.push(`/profile_${id}/settings`)"
+            >
+              Редактировать профиль
+            </UIButton>
           </h1>
           <span class="h5">
             {{ profile?.description || '' }}
           </span>
         </div>
-        <UIButton
-          v-if="isMyProfile"
-          font-type="h5"
-          padding="0 1.25rem"
-          border-radius="0.25rem"
-          @click="$router.push(`/profile_${id}/settings`)"
-        >
-          Редактировать профиль
-        </UIButton>
       </div>
       <div class="tabs">
         <UITabGroup
@@ -128,8 +129,6 @@ section.profile-header {
     .user-info {
       display: flex;
       gap: 1.5rem;
-      align-items: flex-start;
-      justify-content: space-between;
 
       position: relative;
 
@@ -149,11 +148,18 @@ section.profile-header {
       }
 
       .info {
+        width: 100%;
         margin-left: 8.125rem;
 
         h1 {
+          width: 100%;
           display: flex;
+          align-items: center;
           gap: 1rem;
+
+          .edit-profile {
+            margin-left: auto;
+          }
         }
 
         span.h5 {
@@ -164,11 +170,6 @@ section.profile-header {
           min-height: calc(1rem * 1.55);
           min-width: 1rem;
         }
-      }
-
-      button {
-        margin-top: 0.375rem;
-        flex-shrink: 0;
       }
     }
 
