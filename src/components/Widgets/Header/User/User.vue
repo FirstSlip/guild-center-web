@@ -21,7 +21,7 @@
           />
         </div>
         <div class="username">
-          <span>{{ profile.username }}</span>
+          <span class="name">{{ profile.username }}</span>
           <br />
           <span>#{{ profile.tag }}</span>
         </div>
@@ -135,6 +135,13 @@ const haveRequests = computed(() => {
 
       overflow: hidden;
       text-overflow: ellipsis;
+
+      .name {
+        overflow: hidden;
+        text-wrap: nowrap;
+        word-wrap: break-word;
+        text-overflow: ellipsis;
+      }
 
       span {
         color: #fff;
