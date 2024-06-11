@@ -1,11 +1,15 @@
 <template>
   <section class="comments">
-    <label class="add-comment" @keydown="keyDown">
+    <label
+      v-if="myProfile"
+      class="add-comment"
+      @keydown="keyDown"
+    >
       <div class="user-avatar">
         <WidgetsAvatar
           type="User"
-          :name="user?.username || 'Загрузка...'"
-          :avatar-url="user?.avatar"
+          :name="myProfile.username"
+          :avatar-url="myProfile.avatar"
         />
       </div>
       <div class="line"></div>
@@ -71,7 +75,7 @@ const emit = defineEmits<{
 const comment = ref('');
 
 const comments = computed(
-  () => props.user?.comments.reverse() || []
+  () => props.user?.comments.slice() || []
 );
 
 const sendMessage = async () => {
