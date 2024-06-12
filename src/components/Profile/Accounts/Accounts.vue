@@ -21,6 +21,7 @@
 <script lang="ts" setup>
 const addSteam = async () => {
   const response = await $api.user.addSteam();
+  console.log(response);
 };
 </script>
 

@@ -12,10 +12,14 @@
         selectedTab === 'calendar' && 'filled'
       ]"
     >
-      <ProfileIntegrations
-        v-if="selectedTab === 'integrations'"
+      <ProfileAccounts v-if="selectedTab === 'accounts'" />
+      <ProfileGames
+        v-else-if="selectedTab === 'games'"
+        :games="finalUser?.games || []"
+        :is-my-profile="isMyProfile"
+        @added="addGame"
+        @deleted="deleteGame"
       />
-      <ProfileAccounts v-else-if="selectedTab === 'accounts'" />
       <ProfileCalendar v-else-if="selectedTab === 'calendar'" />
       <ProfileComments
         v-else
@@ -83,19 +87,16 @@ const finalUser = computed(() => {
   }
 });
 
-const mockFriends: { name: string; avatarUrl?: string }[] = [
-  { name: 'Степан' },
-  { name: 'Павел' },
-  {
-    name: 'Алексей',
-    avatarUrl:
-      'https://eso-hub.com/storage/uploads/user-avatars/PqUQC5gqHKXHX3jOIPhq1PAM8d7QIDwoEdT5j1KI.png'
+const addGame = (game: string) => {
+  profile.value?.games?.push(game);
+};
+
+const deleteGame = (game: string) => {
+  const index = profile.value?.games?.indexOf(game);
+  if (index !== undefined && index > -1) {
+    profile.value?.games?.splice(index, 1);
   }
-];
-const mockGuilds = [
-  { name: 'WOW Gaming' },
-  { name: 'POE Community' }
-];
+};
 
 const onCommentSent = () => {
   useProfile().loadProfile();

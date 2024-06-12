@@ -12,7 +12,7 @@ export type User = {
   guilds: Guild[];
   friends: ShortUser[];
   gameAccounts: [];
-  games: [];
+  games: string[];
   tasks: [];
   createdAt: string;
   online: 'offline' | 'online';

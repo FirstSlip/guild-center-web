@@ -77,9 +77,9 @@ const tabs = [
     tab: 'accounts'
   },
   {
-    title: 'интеграции',
-    href: `/profile_${props.id}?tab=integrations`,
-    tab: 'integrations'
+    title: 'любимые игры',
+    href: `/profile_${props.id}?tab=games`,
+    tab: 'games'
   },
   {
     title: 'календарь',
