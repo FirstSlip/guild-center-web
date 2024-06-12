@@ -5,3 +5,6 @@ export * from './update';
 export * from './setPrivacy';
 export * from './getByTag';
 export * from './findByUsername';
+export * from './addGame';
+export * from './deleteGame';
+export * from './addSteam';
