@@ -148,8 +148,8 @@ onMounted(() => {
       );
 
       socket.on('messages', (response) => {
-        console.log('messages', response);
         messages.value = response.data.messages;
+        readMessage();
       });
 
       socket.on(
@@ -165,6 +165,29 @@ onMounted(() => {
               }
             });
           }
+        }
+      );
+
+      socket.on(
+        'newMessage',
+        (response: {
+          chatId: string;
+          message: string;
+          date: string;
+        }) => {
+          if (response.chatId === props.chat.chatId) {
+            messages.value.push({
+              data: response.message,
+              sender: {
+                tag: ''
+              },
+              time: response.date,
+              status: true,
+              messageId: messages.value.length.toString(),
+              customStatus: undefined
+            });
+          }
+          readMessage();
         }
       );
 
@@ -226,6 +249,27 @@ onUpdated(() => {
     );
   }
 });
+
+const readMessage = () => {
+  const newMessages = useChats().newMessages;
+  console.log('comp', newMessages.value);
+  const newMessage = newMessages.value.find(
+    (chat) => chat.chatId === props.chat.chatId
+  );
+
+  if (!newMessage) {
+    return;
+  }
+
+  const newMessageIndex = newMessages.value.indexOf(newMessage);
+
+  if (newMessageIndex === -1) {
+    return;
+  }
+
+  newMessages.value.splice(newMessageIndex, 1);
+  console.log('comp1', newMessages.value);
+};
 </script>
 
 <style lang="scss" scoped>

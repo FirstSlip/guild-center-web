@@ -6,6 +6,7 @@
       id=""
       :cols="colsComputed"
       :rows="rowsComputed"
+      :placeholder="placeholder"
       v-model="model"
     ></textarea>
   </div>
@@ -20,6 +21,7 @@ const props = defineProps<{
   fontType?: FontType;
   name?: string;
   id?: string;
+  placeholder?: string;
 }>();
 const font = computed((): FontType => props.fontType || 'p2');
 const colsComputed = computed(() => props.cols || 30);
@@ -46,6 +48,10 @@ const model = defineModel<string>();
     resize: none;
 
     overscroll-behavior: contain;
+
+    &::placeholder {
+      color: #c3c3c3;
+    }
 
     &:focus-visible {
       outline: none;

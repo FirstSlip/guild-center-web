@@ -1,5 +1,9 @@
 <template>
-  <button class="checkbox-wrapper" @click="model = !model">
+  <button
+    class="checkbox-wrapper"
+    type="button"
+    @click="model = !model"
+  >
     <div class="checkbox">
       <transition name="check">
         <SVGCheck v-if="model" />

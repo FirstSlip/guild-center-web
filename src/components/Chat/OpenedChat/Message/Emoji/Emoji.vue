@@ -26,8 +26,11 @@ defineProps<{
 <style lang="scss" scoped>
 .message {
   position: relative;
+  margin-right: auto;
+  margin-left: 0;
 
   &.my-message {
+    margin-right: 0;
     margin-left: auto;
   }
 
@@ -35,6 +38,8 @@ defineProps<{
     font-size: 12rem;
     line-height: 100%;
     letter-spacing: 0;
+
+    user-select: none;
   }
 
   .info {

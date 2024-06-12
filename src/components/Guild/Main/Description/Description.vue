@@ -5,10 +5,10 @@
         <p class="h4">
           <span>Игры:</span>
           <img
-            v-for="(game, index) in currentGuild?.games || []"
+            v-for="(game, index) in games"
             :key="index"
-            :src="`/img/games/${game.replaceAll(' ', '_')}.png`"
-            :alt="game"
+            :src="`/img/games/${game.name.replaceAll(' ', '_')}.png`"
+            :alt="game.name"
           />
         </p>
         <UIButton>Изменить</UIButton>
@@ -17,11 +17,11 @@
         <p class="h4">
           <span class="title">Направления:</span>
           <span
-            v-for="(type, index) in currentGuild?.types || []"
+            v-for="(trend, index) in trends"
             :key="index"
             class="tag p2"
           >
-            {{ type }}
+            {{ trend }}
           </span>
         </p>
       </div>
@@ -36,19 +36,12 @@
 </template>
 
 <script lang="ts" setup>
-const route = useRoute();
+import type { Game } from '@/ts/Game';
 
-const currentGuildId = computed(
-  () => Number(route.params.id) || null
-);
-
-const currentGuild = computed(() => {
-  const guilds = useGuilds().value;
-  console.log(guilds.map((guild) => guild.id));
-  return guilds.find(
-    (guild) => guild.id === currentGuildId.value
-  );
-});
+defineProps<{
+  games: Game[];
+  trends: string[];
+}>();
 </script>
 
 <style lang="scss" scoped>

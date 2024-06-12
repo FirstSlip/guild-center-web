@@ -14,6 +14,7 @@
       borderRadius && { borderRadius: borderRadius }
     ]"
     :disabled="disabled || false"
+    :type="htmlType"
   >
     <slot></slot>
   </button>
@@ -31,6 +32,7 @@ const props = defineProps<{
   fontType?: FontType;
   borderRadius?: string;
   disabled?: boolean;
+  htmlType?: 'button' | 'submit' | 'reset';
 }>();
 defineEmits(['click']);
 

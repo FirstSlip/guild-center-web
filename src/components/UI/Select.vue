@@ -1,10 +1,15 @@
 <template>
   <div
-    :class="['select', otherOptionsOpened && 'active']"
+    :class="[
+      'select',
+      selectType,
+      otherOptionsOpened && 'active'
+    ]"
     @click.stop="$emit('click')"
   >
     <button
       :class="['button', font]"
+      type="button"
       @click="otherOptionsOpened = !otherOptionsOpened"
     >
       <span>{{ titles[selected || 0] }}</span>
@@ -15,6 +20,7 @@
         v-for="title in titlesWithoutSelected"
         :key="title"
         :class="['option', font]"
+        type="button"
         @click="select(title)"
       >
         {{ title }}
@@ -25,7 +31,10 @@
 <script setup lang="ts">
 import type { FontType } from '@/ts/FontType';
 
+type SelectVariant = 'primary' | 'secondary';
+
 const props = defineProps<{
+  type?: SelectVariant;
   titles: string[];
   fontType?: FontType;
 }>();
@@ -34,6 +43,7 @@ const emit = defineEmits<{
   (e: 'click'): void;
 }>();
 const selected = defineModel<number>();
+const selectType = computed(() => props.type || 'primary');
 
 const font = computed((): FontType => props.fontType || 'h5');
 
@@ -57,6 +67,25 @@ const select = (title: string) => {
   width: fit-content;
   background: none;
   border-radius: 0.25rem;
+
+  &.secondary {
+    button.button {
+      background: #181818;
+      border: 1px solid $white-60;
+      width: 13.5rem;
+      border-radius: 0.25rem;
+      justify-content: space-between;
+    }
+
+    &.active {
+      border-color: transparent;
+
+      button.button {
+        background: #181818;
+        border: 1px solid $white-60;
+      }
+    }
+  }
 
   button.button {
     background: none;
@@ -84,6 +113,10 @@ const select = (title: string) => {
       border-radius: 0.25rem 0.25rem 0 0;
 
       color: $selectOpenedColor;
+    }
+
+    svg {
+      transform: rotate(180deg);
     }
   }
 

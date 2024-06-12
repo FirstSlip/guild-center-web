@@ -3,10 +3,16 @@
     <form class="form" @submit.prevent="submit">
       <div class="modal-header">
         <div class="title">
-          <slot name="icon"></slot>
-          <h1><slot name="title"></slot></h1>
+          <div class="icon-wrapper">
+            <slot name="icon"></slot>
+          </div>
+          <h1 class="h3"><slot name="title"></slot></h1>
         </div>
-        <button class="close" @click="close">
+        <button
+          class="close"
+          @click="$emit('close')"
+          type="button"
+        >
           <SVGCross color="#fff" />
         </button>
       </div>
@@ -28,10 +34,6 @@ defineSlots<{
   ['title']: [];
   ['body']: [];
 }>();
-
-const close = () => {
-  emit('close');
-};
 
 const submit = () => {
   emit('submit');
@@ -73,6 +75,21 @@ const submit = () => {
         display: flex;
         align-items: center;
         gap: 0.75rem;
+
+        .icon-wrapper {
+          width: 2.5rem;
+          height: 2.5rem;
+          min-width: 2.5rem;
+          min-height: 2.5rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          svg {
+            width: 100%;
+            height: 100%;
+          }
+        }
 
         h1 {
           font-weight: 700;

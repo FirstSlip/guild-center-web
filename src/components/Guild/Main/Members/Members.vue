@@ -79,8 +79,6 @@ const props = defineProps<{
   members: GuildMember[];
 }>();
 
-console.log('members', props.members);
-
 const computedMembers = computed(() => props.members || []);
 
 /* const members: {

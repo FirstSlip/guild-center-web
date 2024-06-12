@@ -1,6 +1,7 @@
 <template>
   <button
     :class="['tab', active && 'active', tabType]"
+    type="button"
     @click="$emit('click')"
   >
     <p class="h5">

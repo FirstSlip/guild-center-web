@@ -7,6 +7,10 @@
       </nuxt-link>
       <nuxt-link to="/chat">
         <SVGChat />
+        <div
+          class="notification"
+          v-if="newMessages.length > 0"
+        />
       </nuxt-link>
       <nuxt-link :to="`/profile_${profile.tag}/guilds`">
         <SVGCastle stroke="#66FCF1" />
@@ -47,6 +51,7 @@ const props = defineProps<{
 defineEmits(['sign-out']);
 
 const signOutHover = ref(false);
+const newMessages = useChats().newMessages;
 
 const haveRequests = computed(() => {
   return props.profile.friendRequests.some(

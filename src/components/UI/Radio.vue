@@ -1,5 +1,5 @@
 <template>
-  <button class="radio" @click="model = !model">
+  <button class="radio" type="button" @click="model = !model">
     <div
       v-if="$slots['before-text']"
       :class="['before-text', font]"

@@ -2,6 +2,11 @@ import type { Chat } from '@/ts/Chat';
 
 export const useChats = () => {
   const chats = useState<Chat[]>('chats', () => []);
+  const newMessages = useState<
+    {
+      chatId: string;
+    }[]
+  >('newMessages', () => []);
 
   const loadChats = async () => {
     const response = await $api.chat.getChats();
@@ -12,6 +17,7 @@ export const useChats = () => {
 
   return {
     chats,
+    newMessages,
     loadChats
   };
 };

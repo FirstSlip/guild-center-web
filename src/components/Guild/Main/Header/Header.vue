@@ -22,16 +22,30 @@
               {{ guild?.name || 'Загрузка...' }}
             </span>
           </h1>
-          <span class="h5">статус Гильдии</span>
+          <span class="h5">{{ guild?.description || '' }}</span>
         </div>
         <UIButton
+          v-if="!isInGuild"
           font-type="h5"
           padding="0 1.25rem"
           border-radius="0.25rem"
-          @click="$router.push('/profile/settings')"
+          @click="joinGuild"
         >
           Вступить в гильдию
         </UIButton>
+        <div v-else class="other-tools">
+          <UIButton
+            font-type="h5"
+            padding="0 1.25rem"
+            border-radius="0.25rem"
+            @click="$router.push('/profile/settings')"
+          >
+            Покинуть гильдию
+          </UIButton>
+          <button class="settings" @click="$emit('settings')">
+            <SVGSettings />
+          </button>
+        </div>
       </div>
       <div class="tabs">
         <UITabGroup
@@ -56,6 +70,11 @@ const props = defineProps<{
     | 'calendar';
   guild: Guild | null;
   guildId: string;
+  isInGuild: boolean;
+}>();
+const emit = defineEmits<{
+  (e: 'settings'): void;
+  (e: 'refresh'): void;
 }>();
 
 const route = useRoute();
@@ -100,6 +119,13 @@ const currentTabIndex = computed(() => {
   return tabs.findIndex((tab) => props.currentTab === tab.tab);
 });
 
+const joinGuild = async () => {
+  const response = await $api.guild.joinGuild(props.guildId);
+  if ('success' in response) {
+    emit('refresh');
+  }
+};
+
 const switchTab = (index: number) => {
   useRouter().push(tabs[index].href);
 };
@@ -121,8 +147,7 @@ section.guild-header {
       #98537e 50%,
       #ff0050 98%
     );
-    object-fit: fill;
-    background-size: cover;
+    background-size: 100% 100%;
     background-position: center;
   }
 
@@ -165,10 +190,47 @@ section.guild-header {
           display: flex;
           gap: 1rem;
         }
+
+        span.h5 {
+          min-height: calc(1rem * 1.55);
+        }
       }
 
       button {
         margin-top: 0.375rem;
+      }
+
+      .other-tools {
+        margin-top: 0.375rem;
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+
+        button {
+          margin: 0;
+        }
+
+        .settings {
+          width: 1.5rem;
+          height: 1.5rem;
+          padding: 0.25rem;
+
+          background: $light-gray;
+          border: none;
+          border-radius: 0.25rem;
+          cursor: pointer;
+
+          transition: opacity 0.3s ease;
+
+          svg {
+            width: 100%;
+            height: 100%;
+          }
+
+          &:hover {
+            opacity: 0.7;
+          }
+        }
       }
     }
 

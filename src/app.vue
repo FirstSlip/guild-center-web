@@ -36,6 +36,23 @@ onMounted(() => {
       profile.value?.friendRequests.push(req.request);
     }
   );
+
+  socket.on(
+    'newMessage',
+    (response: {
+      chatId: string;
+      message: string;
+      date: string;
+    }) => {
+      console.log('app1');
+      const newMessages = useChats().newMessages;
+      console.log('app', newMessages.value);
+      newMessages.value.push({
+        chatId: response.chatId
+      });
+      console.log('app', newMessages.value);
+    }
+  );
 });
 </script>
 
