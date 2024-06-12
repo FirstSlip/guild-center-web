@@ -12,6 +12,31 @@
         </template>
       </UIInput>
     </div>
+    <div
+      class="account"
+      v-for="account in accounts"
+      :key="account.id"
+    >
+      <div class="header">
+        <img
+          src="/img/Steam.png"
+          alt="Steam"
+          v-if="account.provider === 'steam'"
+        />
+        <p class="h4">
+          {{
+            account.provider.length > 0
+              ? account.provider[0].toUpperCase() +
+                account.provider.slice(1)
+              : ''
+          }}
+        </p>
+      </div>
+      <div class="footer">
+        <p class="p4">{{ account.name }}</p>
+        <p class="p4">{{ account.games }}</p>
+      </div>
+    </div>
     <div class="possible-acc">
       <img src="/img/Steam.png" alt="Steam" />
       <span class="h5">Steam</span>
@@ -34,6 +59,13 @@
 </template>
 
 <script lang="ts" setup>
+import type { Account } from '@/ts/Account';
+
+defineProps<{
+  isMyProfile?: boolean;
+  accounts: Account[];
+}>();
+
 const steamId = ref<string>('');
 const addSteam = async () => {
   if (!steamId.value) {
@@ -74,12 +106,50 @@ section.accounts {
     }
   }
 
+  .account {
+    width: 100%;
+    background: $light-purple;
+    border-radius: 0.25rem;
+    overflow: hidden;
+
+    .header {
+      width: 100%;
+      border-radius: 0.25rem;
+      padding: 1rem;
+
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+
+      img {
+        width: 2rem;
+        height: 2rem;
+        min-width: 2rem;
+        min-height: 2rem;
+      }
+    }
+
+    .footer {
+      padding: 1rem;
+      background-color: #4c5d75;
+
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+
+      p {
+        border-bottom: 1px solid $white;
+        width: 7.5rem;
+      }
+    }
+  }
+
   .possible-acc {
     background: $light-purple;
     width: 100%;
     height: min-content;
     padding: 1rem;
-    border-radius: 1rem;
+    border-radius: 0.25rem;
 
     display: flex;
     align-items: center;

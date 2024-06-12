@@ -12,7 +12,10 @@
         selectedTab === 'calendar' && 'filled'
       ]"
     >
-      <ProfileAccounts v-if="selectedTab === 'accounts'" />
+      <ProfileAccounts
+        v-if="selectedTab === 'accounts'"
+        :accounts="finalUser?.gameAccounts || []"
+      />
       <ProfileGames
         v-else-if="selectedTab === 'games'"
         :games="finalUser?.games || []"
