@@ -6,16 +6,8 @@
     <div class="guilds">
       <GuildFindGuildListCard
         v-for="guild in guilds"
-        :key="guild.id"
-        :id="guild.id"
-        :name="guild.name"
-        :avatar-url="guild.avatarUrl"
-        :banner-url="guild.bannerUrl"
-        :games="guild.games"
-        :types="guild.types"
-        :genres="guild.genres"
-        :members-count="guild.membersCount"
-        :description="guild.description || ''"
+        :key="guild.guildId"
+        :guild="guild"
       />
     </div>
   </section>

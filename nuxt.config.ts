@@ -11,6 +11,11 @@ export default defineNuxtConfig({
   vue: {
     propsDestructure: true
   },
+  app: {
+    head: {
+      title: 'Guild Center'
+    }
+  },
   srcDir: './src/',
   vite: {
     resolve: {

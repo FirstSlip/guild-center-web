@@ -7,12 +7,24 @@
         сможете сменить их в любой момент.
       </p>
     </div>
-    <div class="avatar">
-      <div class="description">
+    <button
+      class="avatar"
+      @click="openSelector"
+      :style="avatarSrc && `background-image: url(${avatarSrc})`"
+    >
+      <div class="description" v-if="!avatarSrc">
         <SVGCamera />
         <p class="h4">Загрузить</p>
       </div>
-    </div>
+      <input
+        type="file"
+        id="file-input"
+        class="file-input"
+        ref="avatarFileInput"
+        accept="image/png, image/jpeg"
+        @change="changeAvatar"
+      />
+    </button>
     <div class="name">
       <UIInput
         placeholder="Придумайте название гильдии"
@@ -26,10 +38,38 @@
 </template>
 
 <script lang="ts" setup>
+import { resizeImage } from '@/common/func/resizeImage';
+
 defineEmits<{
   (e: 'next'): void;
 }>();
+
+const avatarSrc = defineModel<string>('avatarSrc', {
+  default: null
+});
 const name = defineModel<string>('name', { default: '' });
+
+const openSelector = () => {
+  avatarFileInput.value?.click();
+};
+const avatarFileInput = ref<HTMLInputElement | null>(null);
+
+const changeAvatar = async (e: Event) => {
+  const [file] = (<HTMLInputElement>e.target).files || [];
+  if (file) {
+    /* const base64 = await toBase64(file);
+    if (typeof base64 === 'string') {
+      avatarSrc.value = base64;
+      emit('changeAvatar', base64);
+    } */
+    try {
+      const resizedImage = await resizeImage(file, 128, 128);
+      avatarSrc.value = resizedImage;
+    } catch (error) {
+      console.error('Error resizing image:', error);
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -49,6 +89,8 @@ const name = defineModel<string>('name', { default: '' });
   }
 
   .avatar {
+    background: none;
+    background-size: 100% 100%;
     width: 16.5rem;
     height: 16.5rem;
     margin: 0 auto;
@@ -58,9 +100,15 @@ const name = defineModel<string>('name', { default: '' });
 
     border: 4px dashed $white;
 
+    cursor: pointer;
+
     .description {
       margin: auto;
       text-align: center;
+    }
+
+    .file-input {
+      display: none;
     }
   }
 

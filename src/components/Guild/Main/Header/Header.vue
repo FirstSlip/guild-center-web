@@ -192,6 +192,10 @@ section.guild-header {
         }
 
         span.h5 {
+          display: block;
+          width: 5rem;
+          height: calc(1rem * 1.55);
+          min-width: 5rem;
           min-height: calc(1rem * 1.55);
         }
       }

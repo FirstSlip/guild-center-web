@@ -8,7 +8,7 @@
         padding="0.25rem 1.25rem"
         @click="$emit('createChat')"
       >
-        <SVGPlus />
+        <SVGPlus color="#19191d" />
         Создать обсуждение
       </UIButton>
     </div>

@@ -18,7 +18,7 @@
           {{ guild.description }}
         </p>
         <p class="p4">
-          Количество участников: {{ guild.members?.length || 0 }}
+          Количество участников: {{ guild.membersLength }}
         </p>
       </div>
     </div>
@@ -27,7 +27,7 @@
         v-for="(game, index) in guild.games"
         :key="index"
         class="game"
-        :src="`/img/games/${game.name.replaceAll(' ', '_')}.png`"
+        :src="`/img/games/${game.name.replaceAll(' ', '_').replaceAll(':', '')}.png`"
       />
     </div>
   </nuxt-link>
@@ -111,6 +111,13 @@ a.card {
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
+
+    img {
+      width: 2rem;
+      height: 2rem;
+      min-width: 2rem;
+      min-height: 2rem;
+    }
   }
 }
 </style>

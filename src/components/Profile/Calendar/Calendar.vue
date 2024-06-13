@@ -4,11 +4,22 @@
       :months="months"
       v-model="selectedDate"
     />
-    <ProfileCalendarBody :selected-date="selectedDate" />
+    <ProfileCalendarBody
+      :selected-date="selectedDate"
+      :tasks="tasks || []"
+    />
   </section>
 </template>
 
 <script lang="ts" setup>
+const { data: tasks } = useAsyncData('tasks', async () => {
+  const response = await $api.user.getTasks();
+  if ($api.utils.isSuccess(response)) {
+    return response.data.tasks;
+  }
+  return [];
+});
+
 const year = new Date().getFullYear();
 const month = new Date().getMonth();
 const selectedDate = ref({

@@ -10,3 +10,6 @@ export * from './createChat';
 export * from './joinGuild';
 export * from './changeMembers';
 export * from './updateTask';
+export * from './my';
+export * from './getAll';
+export * from './addRule';

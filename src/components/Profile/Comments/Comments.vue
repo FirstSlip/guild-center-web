@@ -75,7 +75,7 @@ const emit = defineEmits<{
 const comment = ref('');
 
 const comments = computed(
-  () => props.user?.comments.slice() || []
+  () => props.user?.comments.slice().reverse() || []
 );
 
 const sendMessage = async () => {

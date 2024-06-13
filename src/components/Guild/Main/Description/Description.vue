@@ -7,11 +7,13 @@
           <img
             v-for="(game, index) in games"
             :key="index"
-            :src="`/img/games/${game.name.replaceAll(' ', '_')}.png`"
+            :src="`/img/games/${game.name.replaceAll(' ', '_').replaceAll(':', '')}.png`"
             :alt="game.name"
           />
         </p>
-        <UIButton>Изменить</UIButton>
+        <UIButton font-type="h5" padding="0.25rem 1.25rem">
+          Изменить
+        </UIButton>
       </div>
       <div class="types">
         <p class="h4">
@@ -26,12 +28,12 @@
         </p>
       </div>
     </div>
-    <div class="guild-description">
+    <!-- <div class="guild-description">
       <div class="info">
         <SVGEdit />
       </div>
       <div class="field h4">Описание гильдии!</div>
-    </div>
+    </div> -->
   </section>
 </template>
 
@@ -74,8 +76,8 @@ section.description {
         }
 
         img {
-          width: 4rem;
-          height: 4rem;
+          width: 3rem;
+          height: 3rem;
         }
       }
     }

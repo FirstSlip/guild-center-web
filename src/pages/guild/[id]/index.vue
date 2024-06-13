@@ -25,6 +25,24 @@
         "
         @open-task="openTask"
       />
+      <GuildMainRules
+        v-else-if="selectedTab === 'rules'"
+        :rules="
+          guild?.rules
+            ? guild.rules.length > 0
+              ? guild.rules[0]
+              : null
+            : null
+        "
+        @create-rule="isRuleModalOpened = true"
+        @edit-rule="
+          (title, description) => {
+            isRuleModalOpened = true;
+            rule.title = title;
+            rule.description = description;
+          }
+        "
+      />
       <GuildMainDescription
         v-else
         :games="guild?.games || []"
@@ -83,6 +101,23 @@
       />
     </template>
   </WidgetsModalWrapper>
+  <WidgetsModalWrapper
+    v-if="isRuleModalOpened"
+    @close="isRuleModalOpened = false"
+    @submit="createRule"
+  >
+    <template #title>Правила</template>
+    <template #icon>
+      <SVGHammer />
+    </template>
+    <template #body>
+      <GuildNewRule
+        v-model:title="rule.title"
+        v-model:description="rule.description"
+        @close="isRuleModalOpened = false"
+      />
+    </template>
+  </WidgetsModalWrapper>
 </template>
 
 <script lang="ts" setup>
@@ -105,6 +140,7 @@ const { data: guild, refresh } = useAsyncData(
   }
 );
 
+const isRuleModalOpened = ref(false);
 const isChatModalOpened = ref(false);
 const isTaskModalOpened = ref(false);
 const taskModalType = ref<'create' | 'edit' | ''>('');
@@ -115,6 +151,10 @@ watch(isTaskModalOpened, () => {
   }
 });
 
+const rule = ref({
+  title: '',
+  description: ''
+});
 const startedDate = ref({
   date: '',
   time: ''
@@ -175,6 +215,19 @@ const openTask = (taskId: string) => {
   taskBody.value = task;
   isTaskModalOpened.value = true;
   taskModalType.value = 'edit';
+};
+const createRule = async () => {
+  /* isRuleModalOpened.value = true; */
+  console.log('createRule');
+  const response = await $api.guild.addRule(
+    id.value,
+    rule.value.title,
+    rule.value.description
+  );
+  if ($api.utils.isSuccess(response)) {
+    isRuleModalOpened.value = false;
+    await refreshData();
+  }
 };
 
 const createTask = async () => {
@@ -264,6 +317,10 @@ const clearTaskModal = () => {
   };
   selectedMembers.value =
     guild.value?.members.map(() => false) || [];
+  rule.value = {
+    title: '',
+    description: ''
+  };
 };
 
 const createChat = async () => {

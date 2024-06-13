@@ -22,6 +22,7 @@
       <ProfileGuildsCreateFirst
         v-if="currentStep === 1"
         v-model:name="guildName"
+        v-model:avatar-src="avatarSrc"
         @next="addStep"
         @prev="reduceStep"
       />
@@ -68,6 +69,7 @@ const age = ref({
   from: 12,
   to: 90
 });
+const avatarSrc = ref<string>('');
 
 const currentStep = ref(1);
 const addStep = () => currentStep.value++;
@@ -82,10 +84,8 @@ const submit = async () => {
   );
   const response = await $api.guild.createGuild({
     name: guildName.value,
-    avatar: 'https://i.pravatar.cc/300',
-    games: finalGamesArray.map((game) => {
-      return { name: game.name, genre: game.genres[0] };
-    }),
+    avatar: avatarSrc.value,
+    games: finalGamesArray,
     trends: selectedGameTypes.value,
     privacy: !!privacy.value,
     age: {
@@ -95,6 +95,7 @@ const submit = async () => {
   });
 
   if ($api.utils.isSuccess(response)) {
+    await useProfile().loadProfile();
     useRouter().push(`/guild/${response.data.guildId}`);
   }
 };

@@ -33,9 +33,20 @@
 const route = useRoute();
 const id = computed(() => route.params.id);
 
-const profile = useProfile().user;
+const { data: myGuilds, refresh } = useAsyncData(
+  `my-guilds`,
+  async () => {
+    const response = await $api.guild.my();
+    if ($api.utils.isSuccess(response)) {
+      return response.data.guilds;
+    }
+    return [];
+  }
+);
 
-const myGuilds = computed(() => profile.value?.guilds || []);
+/* const profile = useProfile().user;
+
+const myGuilds = computed(() => profile.value?.guilds || []); */
 </script>
 
 <style lang="scss" scoped>

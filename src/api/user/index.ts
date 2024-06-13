@@ -9,3 +9,4 @@ export * from './addGame';
 export * from './deleteGame';
 export * from './addSteam';
 export * from './verifySteam';
+export * from './getTasks';

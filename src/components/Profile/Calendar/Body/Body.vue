@@ -19,7 +19,30 @@
       :key="index"
       class="tbody-cell current"
     >
-      {{ day }}
+      <div class="p3">{{ day }}</div>
+      <div
+        v-if="
+          taskDates.find(
+            (date) =>
+              date.day === day &&
+              date.month === selectedDate.month + 1 &&
+              date.year === selectedDate.year
+          )
+        "
+        class="task-time"
+      >
+        <span class="circle"></span>
+        <span class="p4">
+          {{
+            taskDates.find(
+              (date) =>
+                date.day === day &&
+                date.month === selectedDate.month &&
+                date.year === selectedDate.year
+            )?.time || '00:00'
+          }}
+        </span>
+      </div>
     </div>
     <div
       v-for="(day, index) in nextMonthDays"
@@ -32,12 +55,28 @@
 </template>
 
 <script lang="ts" setup>
+import type { Task } from '@/ts/Task';
+
 const props = defineProps<{
   selectedDate: {
     year: number;
     month: number;
   };
+  tasks: Task[];
 }>();
+
+const taskDates = computed(() =>
+  props.tasks.map((task) => {
+    if (!task.startedAt)
+      return {
+        day: 0,
+        month: 0,
+        year: 0,
+        time: '00:00'
+      };
+    return parseDateString(task.startedAt);
+  })
+);
 
 const daysOfWeek = [
   'Понедельник',
@@ -127,6 +166,35 @@ function getMonthInfo(year: number, month: number) {
 
   return { numberOfDays, firstDayOfWeek, lastDayOfWeek };
 }
+
+function parseDateString(dateString: string): {
+  day: number;
+  month: number;
+  year: number;
+  time: string;
+} {
+  // Создаем объект Date из строки
+  const date = new Date(dateString);
+
+  // Получаем компоненты даты и времени
+  const day = date.getDate();
+  const month = date.getMonth() + 1; // Месяцы начинаются с 0
+  const year = date.getFullYear();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+
+  // Форматируем часы и минуты с ведущим нулем, если нужно
+  const formattedHours =
+    hours < 10 ? `0${hours}` : hours.toString();
+  const formattedMinutes =
+    minutes < 10 ? `0${minutes}` : minutes.toString();
+
+  // Формируем строку времени
+  const time = `${formattedHours}:${formattedMinutes}`;
+
+  // Возвращаем объект в нужном формате
+  return { day, month, year, time };
+}
 </script>
 
 <style lang="scss" scoped>
@@ -174,6 +242,20 @@ function getMonthInfo(year: number, month: number) {
 
     &.next {
       background: #292b32;
+    }
+
+    .task-time {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      .circle {
+        width: 0.5rem;
+        height: 0.5rem;
+
+        background-color: #d9d9d9;
+        border-radius: 100%;
+      }
     }
   }
 }

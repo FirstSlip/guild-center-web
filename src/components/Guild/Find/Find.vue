@@ -9,23 +9,35 @@
 </template>
 
 <script lang="ts" setup>
-const guilds = useGuilds();
+/* const guilds = useGuilds(); */
 const search = ref('');
 
+const { data: guilds } = useAsyncData('all-guilds', async () => {
+  const response = await $api.guild.getAll();
+  if ($api.utils.isSuccess(response)) {
+    return response.data.guilds;
+  }
+  return [];
+});
+
 const filteredGuilds = computed(() => {
+  if (!guilds.value) return [];
   const filtered = guilds.value.filter((guild) => {
     return (
-      (guild.genres?.some((genre) =>
-        genres.value.includes(genre)
+      (guild.games.some((game) =>
+        genres.value.some((genre) => game.genre.includes(genre))
       ) ||
         !genres.value.length) &&
-      (guild.games.some((game) => games.value.includes(game)) ||
+      (guild.games.some((game) =>
+        games.value.includes(game.name)
+      ) ||
         !games.value.length) &&
-      (guild.types.some((type) => types.value.includes(type)) ||
+      (guild.trends.some((trend) =>
+        types.value.includes(trend)
+      ) ||
         !types.value.length)
     );
   });
-  console.log(filtered);
   return filtered.filter((guild) =>
     guild.name.toLowerCase().includes(search.value.toLowerCase())
   );

@@ -12,10 +12,12 @@
         </template>
       </UIInput>
     </div>
-    <div
+    <nuxt-link
       class="account"
-      v-for="account in accounts"
+      v-for="account in finalAccounts"
       :key="account.id"
+      :to="`https://steamcommunity.com/profiles/${account.id}`"
+      target="_blank"
     >
       <div class="header">
         <img
@@ -34,9 +36,9 @@
       </div>
       <div class="footer">
         <p class="p4">{{ account.name }}</p>
-        <p class="p4">{{ account.games }}</p>
+        <p class="p4">Кол-во игр: {{ account.games }}</p>
       </div>
-    </div>
+    </nuxt-link>
     <div class="possible-acc">
       <img src="/img/Steam.png" alt="Steam" />
       <span class="h5">Steam</span>
@@ -61,10 +63,14 @@
 <script lang="ts" setup>
 import type { Account } from '@/ts/Account';
 
-defineProps<{
+const props = defineProps<{
   isMyProfile?: boolean;
   accounts: Account[];
 }>();
+
+const finalAccounts = computed(() => {
+  return props.accounts.filter((acc) => acc.verified);
+});
 
 const steamId = ref<string>('');
 const addSteam = async () => {
@@ -111,6 +117,7 @@ section.accounts {
     background: $light-purple;
     border-radius: 0.25rem;
     overflow: hidden;
+    text-decoration: none;
 
     .header {
       width: 100%;

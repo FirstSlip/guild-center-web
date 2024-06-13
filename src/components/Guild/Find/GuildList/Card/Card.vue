@@ -1,10 +1,10 @@
 <template>
-  <nuxt-link class="guild-card" :to="`/guild/${id}`">
+  <nuxt-link class="guild-card" :to="`/guild/${guild.guildId}`">
     <div class="header">
       <img
-        v-if="bannerUrl"
-        :src="bannerUrl"
-        :alt="name"
+        v-if="guild.banner"
+        :src="guild.banner"
+        :alt="guild.name"
         class="banner"
       />
       <div
@@ -14,25 +14,27 @@
       ></div>
       <div class="guild-avatar">
         <WidgetsAvatar
-          :avatar-url="avatarUrl"
-          :name="name"
+          :avatar-url="guild.avatar || ''"
+          :name="guild.name || ''"
           type="Guild"
         />
       </div>
       <div class="games">
         <img
-          v-for="game in games"
-          :src="`/img/games/${game.replaceAll(' ', '_')}.png`"
-          :alt="game"
+          v-for="game in guild.games"
+          :src="`/img/games/${game.name.replaceAll(' ', '_').replaceAll(':', '')}.png`"
+          :alt="game.name"
         />
       </div>
     </div>
     <div class="main">
-      <p class="h5">{{ name }}</p>
-      <p class="p4">{{ description }}</p>
-      <p class="p4">Количество участников: {{ membersCount }}</p>
+      <p class="h5">{{ guild.name }}</p>
+      <p class="p4">{{ guild.description }}</p>
+      <p class="p4">
+        Количество участников: {{ guild.membersLength }}
+      </p>
       <div class="types">
-        <span v-for="guildType in types" class="type">
+        <span v-for="guildType in guild.trends" class="type">
           {{ guildType }}
         </span>
       </div>
@@ -42,32 +44,28 @@
 
 <script lang="ts" setup>
 import { generateAvatarColor } from '@/common/func/generateAvatarColor';
+import type { Guild } from '@/ts/Guild';
 
 const props = defineProps<{
-  id: number;
-  name: string;
-  description: string;
-  membersCount: number;
-  avatarUrl?: string;
-  bannerUrl?: string;
-  games: string[];
-  types: string[];
+  guild: Guild;
 }>();
 
 const bannerColor = computed(
-  () => generateAvatarColor(props.name).bg
+  () => generateAvatarColor(props.guild.name).bg
 );
-console.log(props.name, props.bannerUrl);
+console.log(props.guild.name, props.guild.banner);
 </script>
 
 <style lang="scss" scoped>
-button.guild-card {
+a.guild-card {
   background-color: #202833;
   border: none;
   display: flex;
   flex-direction: column;
   border-radius: 0.94rem;
   overflow: hidden;
+
+  text-decoration: none;
 
   cursor: pointer;
   user-select: none;

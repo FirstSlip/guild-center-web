@@ -90,9 +90,6 @@ defineEmits<{
         border-radius: 50%;
         background-color: #ffcd29;
       }
-
-      p.h5 {
-      }
     }
 
     .list {
